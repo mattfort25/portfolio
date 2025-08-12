@@ -1,0 +1,116 @@
+.header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 1rem 2rem;
+              background-color: #fff;
+              border-bottom: 1px solid #eaeaea;
+              position: sticky;
+              top: 0;
+              z-index: 1000;
+              font-family: sans-serif;
+}
+
+.logoLink {
+              font-weight: bold;
+              font-size: 1.5rem;
+              text-decoration: none;
+              color: #333;
+}
+
+.nav {
+              flex-grow: 1;
+              display: flex;
+              justify-content: center;
+}
+
+.navList {
+              list-style: none;
+              display: flex;
+              gap: 2rem;
+              padding: 0;
+              margin: 0;
+}
+
+/* Style for the new navigation links */
+.navLink {
+              text-decoration: none;
+              color: #555;
+              font-weight: 500;
+              transition: color 0.3s ease;
+}
+
+.navLink:hover {
+              color: #0070f3;
+}
+
+.rightSection {
+              display: flex;
+              gap: 1rem;
+}
+
+.loginButton,
+.signupButton {
+              padding: 0.75rem 1.5rem;
+              border-radius: 8px;
+              font-weight: 600;
+              text-decoration: none;
+              transition: background-color 0.3s ease;
+}
+
+.loginButton {
+              background-color: #f0f0f0;
+              color: #333;
+              border: 1px solid #ddd;
+}
+
+.loginButton:hover {
+              background-color: #e0e0e0;
+}
+
+.signupButton {
+              background-color: #0070f3;
+              color: #fff;
+              border: 1px solid #0070f3;
+}
+
+.signupButton:hover {
+              background-color: #005bb5;
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+              .header {
+                            background-color: #1a1a1a;
+                            border-bottom: 1px solid #333;
+              }
+
+              .logoLink {
+                            color: #f0f0f0;
+              }
+
+              .navLink {
+                            color: #ccc;
+              }
+
+              .navLink:hover {
+                            color: #0099ff;
+              }
+
+              .loginButton {
+                            background-color: #2a2a2a;
+                            color: #e0e0e0;
+                            border: 1px solid #444;
+              }
+
+              .loginButton:hover {
+                            background-color: #3a3a3a;
+              }
+
+              .signupButton {
+                            background-color: #005bb5;
+              }
+
+              .signupButton:hover {
+                            background-color: #004a99;
+              }           }
