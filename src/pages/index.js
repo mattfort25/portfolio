@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Your Portfolio Dashboard</title>
+        <title>Financial Profile</title>
         <meta
           name="description"
           content="Track your investments, get real-time news, and manage your portfolio with ease."
@@ -19,7 +19,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <p>Your Portfolio Dashboard © 2025</p>
+        <p>Financial Profile © 2025</p>
       </footer>
     </div>
   );
