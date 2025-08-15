@@ -7,7 +7,7 @@ const Header = () => {
       <div className={styles.leftSection}>
         <div className={styles.logo}>
           <Link href="/" className={styles.logoLink}>
-            Financial Profile
+            Metanym
           </Link>
         </div>
       </div>
@@ -20,8 +20,8 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link href="/market" className={styles.navLink}>
-              Market
+            <Link href="/atest" className={styles.navLink}>
+              APITest
             </Link>
           </li>
           <li>
