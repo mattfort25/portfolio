@@ -1,0 +1,110 @@
+.dashboardContainer {
+              padding: 2rem;
+              max-width: 1400px;
+              margin: 0 auto;
+              font-family: sans-serif;
+              background-color: #f8f9fa;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+              margin-top: 2rem;
+}
+
+.dashboardTitle {
+              font-size: 2.5rem;
+              font-weight: bold;
+              color: #333;
+              margin-bottom: 2rem;
+}
+
+.topSection {
+              display: flex;
+              gap: 2rem;
+              margin-bottom: 2rem;
+              flex-wrap: wrap;
+}
+
+.valueAndNewsSection {
+              display: flex;
+              flex-direction: column;
+              gap: 1.5rem;
+              flex: 1;
+              min-width: 300px;
+}
+
+.totalValueCard,
+.todaysChangeCard {
+              background-color: #ffffff;
+              border-radius: 12px;
+              padding: 1.5rem;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+              font-size: 1.1rem;
+              color: #666;
+              margin-bottom: 0.5rem;
+}
+
+.valueText {
+              font-size: 1.8rem;
+              font-weight: bold;
+              color: #333;
+}
+
+.bottomSection {
+              margin-top: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+              .dashboardContainer {
+                            background-color: #1a1a1a;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+              }
+
+              .dashboardTitle {
+                            color: #f0f0f0;
+              }
+
+              .totalValueCard,
+              .todaysChangeCard {
+                            background-color: #2a2a2a;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+              }
+
+              .cardHeader {
+                            color: #bbb;
+              }
+
+              .valueText {
+                            color: #f0f0f0;
+              }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+              .topSection {
+                            flex-direction: column;
+              }
+
+              .valueAndNewsSection {
+                            min-width: unset;
+              }
+}
+
+@media (max-width: 768px) {
+              .dashboardContainer {
+                            padding: 1rem;
+                            margin-top: 1rem;
+              }
+
+              .dashboardTitle {
+                            font-size: 2rem;
+              }
+
+              .topSection {
+                            gap: 1.5rem;
+              }
+
+              .valueAndNewsSection {
+                            gap: 1rem;
+              }           }

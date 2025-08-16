@@ -1,0 +1,84 @@
+.portfolioPerformanceCard {
+              flex: 2;
+              background-color: #ffffff;
+              border-radius: 12px;
+              padding: 1.5rem;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+              min-height: 350px;
+              display: flex;
+              flex-direction: column;
+}
+
+.cardHeader {
+              font-size: 1.2rem;
+              font-weight: 600;
+              color: #333;
+              margin-bottom: 1rem;
+}
+
+.chartContainer {
+              flex-grow: 1;
+              width: 100%;
+              height: 200px;
+              margin-bottom: 1rem;
+}
+
+.timeRangeButtons {
+              display: flex;
+              gap: 0.5rem;
+              justify-content: center;
+              padding-top: 1rem;
+              border-top: 1px solid #eee;
+}
+
+.timeButton {
+              padding: 0.6rem 1rem;
+              border: 1px solid #ddd;
+              border-radius: 6px;
+              background-color: #f0f0f0;
+              color: #555;
+              cursor: pointer;
+              font-size: 0.9rem;
+              transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.timeButton:hover {
+              background-color: #e0e0e0;
+              border-color: #ccc;
+}
+
+.timeButton:focus {
+              outline: none;
+              border-color: #0070f3;
+              box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+              .portfolioPerformanceCard {
+                            background-color: #2a2a2a;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+              }
+
+              .cardHeader {
+                            color: #f0f0f0;
+              }
+
+              .timeRangeButtons {
+                            border-top: 1px solid #3a3a3a;
+              }
+
+              .timeButton {
+                            background-color: #3a3a3a;
+                            color: #e0e0e0;
+                            border: 1px solid #4a4a4a;
+              }
+
+              .timeButton:hover {
+                            background-color: #4a4a4a;
+                            border-color: #5a5a5a;
+              }
+
+              .timeButton:focus {
+                            box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.3);
+              }           }

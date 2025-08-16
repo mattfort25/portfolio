@@ -1,0 +1,135 @@
+.sandboxPortfolioCard {
+              background-color: #ffffff;
+              border-radius: 12px;
+              padding: 1.5rem;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+              font-size: 1.2rem;
+              font-weight: 600;
+              color: #333;
+              margin-bottom: 1rem;
+}
+
+.searchBar {
+              display: flex;
+              align-items: center;
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              padding: 0.5rem 1rem;
+              margin-bottom: 1.5rem;
+}
+
+.searchBar i {
+              color: #888;
+              margin-right: 0.5rem;
+}
+
+.searchInput {
+              border: none;
+              outline: none;
+              flex-grow: 1;
+              font-size: 1rem;
+              padding: 0.2rem 0;
+              background-color: transparent;
+              color: #333;
+}
+
+.searchInput::placeholder {
+              color: #aaa;
+}
+
+.companyListHeader {
+              display: grid;
+              grid-template-columns: 2fr 1fr 1fr 1.2fr 0.8fr;
+              gap: 0.5rem;
+              padding-bottom: 0.8rem;
+              margin-bottom: 0.8rem;
+              border-bottom: 1px solid #eee;
+              font-weight: 600;
+              color: #666;
+              font-size: 0.9rem;
+              text-align: left;
+}
+
+.companyListItem {
+              display: grid;
+              grid-template-columns: 2fr 1fr 1fr 1.2fr 0.8fr;
+              gap: 0.5rem;
+              padding: 0.8rem 0;
+              border-bottom: 1px dashed #eee;
+              font-size: 0.95rem;
+              color: #333;
+              align-items: center;
+}
+
+.companyListItem:last-child {
+              border-bottom: none;
+}
+
+.noResults {
+              text-align: center;
+              color: #777;
+              padding: 2rem 0;
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+              .sandboxPortfolioCard {
+                            background-color: #2a2a2a;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+              }
+
+              .cardHeader {
+                            color: #f0f0f0;
+              }
+
+              .searchBar {
+                            border: 1px solid #4a4a4a;
+                            background-color: #3a3a3a;
+              }
+
+              .searchBar i {
+                            color: #aaa;
+              }
+
+              .searchInput {
+                            color: #f0f0f0;
+              }
+
+              .searchInput::placeholder {
+                            color: #888;
+              }
+
+              .companyListHeader {
+                            border-bottom: 1px solid #4a4a4a;
+                            color: #bbb;
+              }
+
+              .companyListItem {
+                            border-bottom: 1px dashed #4a4a4a;
+                            color: #e0e0e0;
+              }
+
+              .noResults {
+                            color: #aaa;
+              }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+              .companyListHeader,
+              .companyListItem {
+                            grid-template-columns: 1fr;
+                            text-align: center;
+              }
+
+              .companyListItem span {
+                            padding: 0.2rem 0;
+              }
+
+              .companyListHeader span {
+                            padding: 0.2rem 0;
+              }           }
