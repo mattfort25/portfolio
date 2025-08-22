@@ -1,5 +1,16 @@
 /* src/styles/Auth.module.css */
+
 .container {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: calc(100vh - 80px);
+              background-color: #f0f2f5;
+              font-family: sans-serif;
+              padding: 20px;
+}
+
+.login-container {
               display: flex;
               justify-content: center;
               align-items: center;
@@ -31,6 +42,7 @@
               text-align: left;
 }
 
+/* Form labels */
 .label {
               display: block;
               font-size: 0.95rem;
@@ -55,6 +67,86 @@
               outline: none;
               border-color: #0070f3;
               box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.2);
+}
+
+/* Password container  */
+.password-container {
+              position: relative;
+              display: flex;
+              align-items: center;
+}
+
+.password-toggle-icon {
+              position: absolute;
+              right: 15px;
+              top: 50%;
+              transform: translateY(-50%);
+              cursor: pointer;
+              color: #666;
+              transition: color 0.3s ease;
+              z-index: 2;
+}
+
+.password-toggle-icon:hover {
+              color: #0070f3;
+}
+
+/* Forgot password*/
+.forgot-password {
+              color: #0070f3 !important;
+              text-decoration: none !important;
+              font-size: 0.9rem;
+              font-weight: 500;
+              padding: 0 !important;
+              border: none !important;
+              background: none !important;
+}
+
+.forgot-password:hover {
+              text-decoration: underline !important;
+}
+
+/* Social login*/
+.social-login-wrapper {
+              margin: 20px 0;
+}
+
+.or-signin-text {
+              position: relative;
+              text-align: center;
+              margin: 20px 0;
+}
+
+.or-signin-text span {
+              background: #ffffff;
+              padding: 0 15px;
+              color: #666;
+              font-size: 0.9rem;
+}
+
+.or-signin-text::before {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 0;
+              right: 0;
+              height: 1px;
+              background: #ddd;
+}
+
+/* Register link */
+.register-link {
+              color: #0070f3 !important;
+              text-decoration: none !important;
+              font-size: 1rem;
+              font-weight: 500;
+              padding: 10px 0 !important;
+              border: none !important;
+              background: none !important;
+}
+
+.register-link:hover {
+              text-decoration: underline !important;
 }
 
 .button {
@@ -102,7 +194,9 @@
 
 /* Dark Mode Styles */
 @media (prefers-color-scheme: dark) {
-              .container {
+
+              .container,
+              .login-container {
                             background-color: #0f0f0f;
               }
 
@@ -136,6 +230,31 @@
                             box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.3);
               }
 
+              .password-toggle-icon {
+                            color: #bbb;
+              }
+
+              .password-toggle-icon:hover {
+                            color: #0099ff;
+              }
+
+              .forgot-password {
+                            color: #0099ff !important;
+              }
+
+              .register-link {
+                            color: #0099ff !important;
+              }
+
+              .or-signin-text span {
+                            background: #1a1a1a;
+                            color: #bbb;
+              }
+
+              .or-signin-text::before {
+                            background: #4a4a4a;
+              }
+
               .button {
                             background-color: #005bb5;
               }
@@ -159,4 +278,5 @@
                             background-color: #4a1c1c;
                             color: #e35a67;
                             border: 1px solid #e35a67;
-              }           }
+              }
+}

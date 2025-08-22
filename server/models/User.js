@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 const User = sequelize.define(
   "User",
@@ -39,8 +40,21 @@ const User = sequelize.define(
   }
 );
 
-// Associations (add these in a separate file if you prefer)
-// User.hasMany(UserAsset, { foreignKey: 'user_id' });
-// User.hasMany(Subscription, { foreignKey: 'user_id' });
+// hooks
+// User.beforeCreate(async (user) => {
+//   if (user.password) {
+//     user.password = await bcrypt.hash(user.password, 10);
+//   }
+// });
+
+// User.beforeUpdate(async (user, options) => {
+//   if (user.changed("password")) {
+//     user.password = await bcrypt.hash(user.password, 10);
+//   }
+// });
+
+// User.prototype.verifyPassword = async function (password) {
+//   return await bcrypt.compare(password, this.password);
+// };
 
 module.exports = User;

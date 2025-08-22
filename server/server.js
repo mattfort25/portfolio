@@ -6,6 +6,8 @@ const { REDIRECT_URL } = require("./utils/general");
 const cors = require("cors");
 const test = require("./routes/testRoutes");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const stockRoutes = require("./routes/stockRoutes");
 
 // Importing all models
 const User = require("./models/User");
@@ -13,6 +15,7 @@ const Asset = require("./models/Asset");
 const UserAsset = require("./models/UserAsset");
 const Subscription = require("./models/Subscription");
 const HistoricalPrice = require("./models/HistoricalPrice");
+const News = require("./models/News");
 const app = express();
 // Importing association
 const defineAssociations = require("./models/associations");
@@ -38,6 +41,8 @@ sequelize
 // Routes
 app.use("/api/test", test);
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/stocks", stockRoutes);
 
 const PORT = process.env.PORT || 8080;
 

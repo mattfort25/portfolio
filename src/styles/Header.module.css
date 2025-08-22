@@ -78,6 +78,49 @@
               background-color: #005bb5;
 }
 
+.profileContainer {
+              position: relative;
+              cursor: pointer;
+              font-weight: 600;
+}
+
+.welcomeText {
+              color: #333;
+}
+
+.dropdownMenu {
+              position: absolute;
+              top: 100%;
+              right: 0;
+              background-color: #fff;
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              min-width: 150px;
+              padding: 0.5rem 0;
+              z-index: 1001;
+              display: flex;
+              flex-direction: column;
+}
+
+.dropdownItem {
+              padding: 0.5rem 1rem;
+              text-decoration: none;
+              color: #333;
+}
+
+.dropdownItem:hover {
+              background-color: #f0f0f0;
+}
+
+.divider {
+              height: 1px;
+              background-color: #ddd;
+              margin: 0.5rem 0;
+}
+
+
+
 /* Dark Mode Styles */
 @media (prefers-color-scheme: dark) {
               .header {
@@ -114,3 +157,30 @@
               .signupButton:hover {
                             background-color: #004a99;
               }           }
+
+                            @media (prefers-color-scheme: dark) {
+                                          .profileContainer {
+                                                        color: #e0e0e0;
+                                          }
+              
+                                          .welcomeText {
+                                                        color: #e0e0e0;
+                                          }
+              
+                                          .dropdownMenu {
+                                                        background-color: #2a2a2a;
+                                                        border-color: #444;
+                                          }
+              
+                                          .dropdownItem {
+                                                        color: #e0e0e0;
+                                          }
+              
+                                          .dropdownItem:hover {
+                                                        background-color: #3a3a3a;
+                                          }
+              
+                                          .divider {
+                                                        background-color: #444;
+                                          }
+                            }
