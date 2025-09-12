@@ -4,6 +4,7 @@ const defineAssociations = (sequelize) => {
   const User = require("./User");
   const Asset = require("./Asset");
   const UserAsset = require("./UserAsset");
+  const SandboxAsset = require("./SandboxAsset");
   const Subscription = require("./Subscription");
   const HistoricalPrice = require("./HistoricalPrice");
   const News = require("./News");
@@ -11,9 +12,11 @@ const defineAssociations = (sequelize) => {
   // User associations
   User.hasMany(UserAsset, { foreignKey: "user_id", onDelete: "CASCADE" }); // if a user is deleted, their user_assets are also deleted
   User.hasMany(Subscription, { foreignKey: "user_id", onDelete: "CASCADE" });
+  User.hasMany(SandboxAsset, { foreignKey: "user_id", onDelete: "CASCADE" });
 
   // Asset associations
   Asset.hasMany(UserAsset, { foreignKey: "asset_id", onDelete: "CASCADE" });
+  Asset.hasMany(SandboxAsset, { foreignKey: "asset_id", onDelete: "CASCADE" });
   Asset.hasMany(HistoricalPrice, {
     foreignKey: "asset_id",
     onDelete: "CASCADE",
@@ -32,6 +35,10 @@ const defineAssociations = (sequelize) => {
 
   // News associations
   News.belongsTo(Asset, { foreignKey: "asset_id" });
+
+  // Sandbox
+  SandboxAsset.belongsTo(User, { foreignKey: "user_id" });
+  SandboxAsset.belongsTo(Asset, { foreignKey: "asset_id" });
 
   console.log("Model associations defined.");
 };

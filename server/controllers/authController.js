@@ -45,7 +45,7 @@ const signup = async (req, res) => {
       name,
       email,
       password_hash,
-      subscription_plan: subscriptionPlan || "free",
+      subscription_plan: subscriptionPlan,
     });
 
     // Generate JWTs (access and refresh Tokens)

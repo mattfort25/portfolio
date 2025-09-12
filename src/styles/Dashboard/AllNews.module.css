@@ -1,82 +1,87 @@
+/* src/styles/Dashboard/AllNews.module.css */
+
 .allNewsCard {
-              background-color: #ffffff;
-              border-radius: 12px;
-              padding: 1.5rem;
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-              flex: 1;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex: 1;
 }
 
 .cardHeader {
-              font-size: 1.2rem;
-              font-weight: 600;
-              color: #333;
-              margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
 .newsList {
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .newsItem {
-              border-bottom: 1px dashed #eee;
-              padding-bottom: 1rem;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 1rem;
 }
 
 .newsItem:last-child {
-              border-bottom: none;
-              padding-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .newsHeadline {
-              font-size: 1rem;
-              font-weight: 600;
-              color: #333;
-              margin-bottom: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
 }
 
 .newsSummary {
-              font-size: 0.9rem;
-              color: #555;
-              line-height: 1.4;
-              margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
 }
 
 .newsMeta {
-              display: flex;
-              justify-content: space-between;
-              font-size: 0.8rem;
-              color: #888;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #888;
 }
 
 .newsSource {
-              font-weight: 500;
+  font-weight: 500;
 }
 
 /* Dark Mode Styles */
 @media (prefers-color-scheme: dark) {
-              .allNewsCard {
-                            background-color: #2a2a2a;
-                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-              }
+  .allNewsCard {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
 
-              .cardHeader {
-                            color: #f0f0f0;
-              }
+  .cardHeader {
+    color: #f0f0f0;
+  }
 
-              .newsItem {
-                            border-bottom: 1px dashed #4a4a4a;
-              }
+  .newsItem {
+    border-bottom: 1px dashed #4a4a4a;
+  }
 
-              .newsHeadline {
-                            color: #f0f0f0;
-              }
+  .newsHeadline {
+    color: #f0f0f0;
+  }
 
-              .newsSummary {
-                            color: #ccc;
-              }
+  .newsSummary {
+    color: #ccc;
+  }
 
-              .newsMeta {
-                            color: #aaa;
-              }           }
+  .newsMeta {
+    color: #aaa;
+  }
+}

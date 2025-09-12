@@ -43,8 +43,4 @@ const Subscription = sequelize.define(
   }
 );
 
-// Associations
-// User.hasMany(Subscription, { foreignKey: "user_id" });
-// Subscription.belongsTo(User, { foreignKey: "user_id" });
-
 module.exports = Subscription;

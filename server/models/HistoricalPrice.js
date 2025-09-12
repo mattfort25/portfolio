@@ -47,8 +47,4 @@ const HistoricalPrice = sequelize.define(
   }
 );
 
-// // Associations
-// Asset.hasMany(HistoricalPrice, { foreignKey: "asset_id" });
-// HistoricalPrice.belongsTo(Asset, { foreignKey: "asset_id" });
-
 module.exports = HistoricalPrice;

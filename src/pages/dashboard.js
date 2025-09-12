@@ -1,14 +1,25 @@
+// src/pages/dashboard.js
 import Head from "next/head";
 import styles from "../styles/Dashboard.module.css";
+import { useState } from "react";
 import PortfolioPerformance from "../components/Dashboard/PortfolioPerformance";
 import SandboxPortfolio from "../components/Dashboard/SandboxPortfolio";
 import AllNews from "../components/Dashboard/AllNews";
 
 export default function Dashboard() {
+  const [totalValue, setTotalValue] = useState("XX,XXX");
+  const [todaysChange, setTodaysChange] = useState("XXX.XX");
+  const [selectedTicker, setSelectedTicker] = useState(null);
+
+  const updateDashboardValues = (newTotalValue, newTodaysChange) => {
+    setTotalValue(newTotalValue);
+    setTodaysChange(newTodaysChange);
+  };
+
   return (
     <>
       <Head>
-        <title>Dashboard | Personal Lending</title>
+        <title>Dashboard | Financial profile</title>
         <meta
           name="description"
           content="Your personal investment dashboard."
@@ -23,22 +34,26 @@ export default function Dashboard() {
         <h1 className={styles.dashboardTitle}>Dashboard</h1>
 
         <div className={styles.topSection}>
-          <PortfolioPerformance />
+          <PortfolioPerformance selectedTicker={selectedTicker} />
           <div className={styles.valueAndNewsSection}>
             <div className={styles.totalValueCard}>
               <h2 className={styles.cardHeader}>Total Value</h2>
-              <p className={styles.valueText}>$XX,XXX</p>
+              <p className={styles.valueText}>${totalValue}</p>
             </div>
             <div className={styles.todaysChangeCard}>
               <h2 className={styles.cardHeader}>Today's Change</h2>
-              <p className={styles.valueText}>$XXX.XX</p>
+              <p className={styles.valueText}>${todaysChange}</p>
             </div>
-            <AllNews />
+            <AllNews selectedTicker={selectedTicker} />{" "}
           </div>
         </div>
 
         <div className={styles.bottomSection}>
-          <SandboxPortfolio />
+          <SandboxPortfolio
+            updateDashboardValues={updateDashboardValues}
+            onStockSelect={setSelectedTicker}
+            selectedTicker={selectedTicker}
+          />
         </div>
       </div>
     </>

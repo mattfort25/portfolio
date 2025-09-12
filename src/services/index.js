@@ -57,14 +57,11 @@ const fetchWithTokenRefresh = async (url, options) => {
       throw new Error("No refresh token");
     }
 
-    const refreshResponse = await fetch(
-      `${API_BASE_URL}/api/auth/token/refresh`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
-      }
-    );
+    const refreshResponse = await fetch(`${API_BASE_URL}/auth/token/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    });
 
     if (refreshResponse.ok) {
       const { accessToken } = await refreshResponse.json();
@@ -250,3 +247,137 @@ export async function getStockDetails(query) {
     };
   }
 }
+export async function getSandboxPortfolio() {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/sandbox`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return { success: true, data: data.data };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to fetch sandbox portfolio.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching sandbox portfolio:", error);
+    return { success: false, message: "Network error occurred." };
+  }
+}
+
+export async function addSandboxAsset(ticker, name, quantity) {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/sandbox/add`, {
+      method: "POST",
+      body: JSON.stringify({ ticker, name, quantity }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return { success: true, message: data.message };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to add asset.",
+      };
+    }
+  } catch (error) {
+    console.error("Error adding sandbox asset:", error);
+    return { success: false, message: "Network error occurred." };
+  }
+}
+
+export async function removeSandboxAsset(sandboxAssetId) {
+  try {
+    const response = await my_fetch(
+      `${API_BASE_URL}/sandbox/remove/${sandboxAssetId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.json();
+    if (response.ok) {
+      return { success: true, message: data.message };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to remove asset.",
+      };
+    }
+  } catch (error) {
+    console.error("Error removing sandbox asset:", error);
+    return { success: false, message: "Network error occurred." };
+  }
+}
+
+export async function updateSandboxAssetShares(sandboxAssetId, quantity) {
+  try {
+    const response = await my_fetch(
+      `${API_BASE_URL}/sandbox/update-shares/${sandboxAssetId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ quantity }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, message: data.message };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to update shares.",
+      };
+    }
+  } catch (error) {
+    console.error("Error updating sandbox asset shares:", error);
+    return {
+      success: false,
+      message: error.message || "Network error occurred.",
+    };
+  }
+}
+export async function getStockHistory(ticker, interval, range) {
+  try {
+    const url = `${API_BASE_URL}/stocks/${ticker}/history?interval=${interval}&range=${range}`;
+    const response = await my_fetch(url);
+
+    const data = await response.json();
+    if (response.ok) {
+      return { success: true, data: data.history };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to fetch stock history.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching stock history:", error);
+    return {
+      success: false,
+      message: "Network error occurred. Failed to fetch stock history.",
+    };
+  }
+}
+
+export const getStockNews = async (ticker) => {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/stocks/${ticker}/news`);
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, news: data.news };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to fetch news.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching stock news:", error);
+    return { success: false, message: "Network error occurred." };
+  }
+};

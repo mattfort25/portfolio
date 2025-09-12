@@ -24,9 +24,9 @@ const User = sequelize.define(
       allowNull: false,
     },
     subscription_plan: {
-      type: DataTypes.ENUM("free", "premium"),
+      type: DataTypes.ENUM("silver", "gold", "platinum"),
       allowNull: false,
-      defaultValue: "free",
+      defaultValue: "silver",
     },
     subscription_expiry: {
       type: DataTypes.DATE,
@@ -39,22 +39,5 @@ const User = sequelize.define(
     updatedAt: "updated_at",
   }
 );
-
-// hooks
-// User.beforeCreate(async (user) => {
-//   if (user.password) {
-//     user.password = await bcrypt.hash(user.password, 10);
-//   }
-// });
-
-// User.beforeUpdate(async (user, options) => {
-//   if (user.changed("password")) {
-//     user.password = await bcrypt.hash(user.password, 10);
-//   }
-// });
-
-// User.prototype.verifyPassword = async function (password) {
-//   return await bcrypt.compare(password, this.password);
-// };
 
 module.exports = User;

@@ -1,6 +1,7 @@
 // src/components/Header.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link"; // Add this import
 import { useAuth } from "../context/AuthContext.js";
 import { getUserProfile } from "../services";
 import styles from "../styles/Header.module.css";
@@ -9,7 +10,6 @@ const Header = () => {
   const { authState, logout } = useAuth();
   const { token } = authState;
   const router = useRouter();
-
   const [userName, setUserName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -42,62 +42,60 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <a href="/" className={styles.logoLink}>
+      <Link href="/" className={styles.logoLink}>
         Metanym
-      </a>
-
+      </Link>
       <nav className={styles.nav}>
         <ul className={styles.navList}>
           {token ? (
             <>
               <li>
-                <a href="/dashboard" className={styles.navLink}>
+                <Link href="/dashboard" className={styles.navLink}>
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/assets" className={styles.navLink}>
+                <Link href="/assets" className={styles.navLink}>
                   My Assets
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/market" className={styles.navLink}>
+                <Link href="/market" className={styles.navLink}>
                   Market Data
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/news" className={styles.navLink}>
+                <Link href="/news" className={styles.navLink}>
                   News & Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/atest" className={styles.navLink}>
-                  APITest
-                </a>
+                <Link href="/pricing" className={styles.navLink}>
+                  Pricing
+                </Link>
               </li>
             </>
           ) : (
             <>
               <li>
-                <a href="/#about" className={styles.navLink}>
+                <Link href="/#about" className={styles.navLink}>
                   About
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#contact" className={styles.navLink}>
+                <Link href="/#contact" className={styles.navLink}>
                   Contact
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/watchlist" className={styles.navLink}>
-                  watchlist
-                </a>
+                <Link href="/pricing" className={styles.navLink}>
+                  Pricing
+                </Link>
               </li>
             </>
           )}
         </ul>
       </nav>
-
       <div className={styles.rightSection}>
         {token ? (
           <div
@@ -107,28 +105,27 @@ const Header = () => {
             <span className={styles.welcomeText}>Hi, {userName || "User"}</span>
             {showDropdown && (
               <div className={styles.dropdownMenu}>
-                <a href="/dashboard" className={styles.dropdownItem}>
+                <Link href="/dashboard" className={styles.dropdownItem}>
                   Dashboard
-                </a>
-                <a href="/profile" className={styles.dropdownItem}>
+                </Link>
+                <Link href="/profile" className={styles.dropdownItem}>
                   Profile Settings
-                </a>
+                </Link>
                 <div className={styles.divider}></div>
-                <a onClick={handleLogout} className={styles.dropdownItem}>
+                <button onClick={handleLogout} className={styles.dropdownItem}>
                   Logout
-                </a>
+                </button>
               </div>
             )}
           </div>
         ) : (
           <>
-            <a href="/auth/login" className={styles.loginButton}>
+            <Link href="/auth/login" className={styles.loginButton}>
               Login
-            </a>
-            <a href="/auth/signup" className={styles.signupButton}>
+            </Link>
+            <Link href="/auth/signup" className={styles.signupButton}>
               Join now
-            </a>
-            ;
+            </Link>
           </>
         )}
       </div>

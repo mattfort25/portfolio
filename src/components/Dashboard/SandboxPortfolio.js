@@ -1,13 +1,47 @@
 // src/components/Dashboard/SandboxPortfolio.js
 import React, { useState, useEffect } from "react";
-import styles from "../../styles/Dashboard/SandboxPortfolio.module.css";
-import { getStockDetails } from "@/services";
+import styles from "../../styles/SandboxPortfolio.module.css";
+import {
+  getStockDetails,
+  getSandboxPortfolio,
+  addSandboxAsset,
+  removeSandboxAsset,
+  updateSandboxAssetShares,
+} from "@/services";
 
-const SandboxPortfolio = () => {
+const SandboxPortfolio = ({
+  updateDashboardValues,
+  onStockSelect,
+  selectedTicker,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [portfolioCompanies, setPortfolioCompanies] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
+
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
+
+  useEffect(() => {
+    const summary = calculatePortfolioSummary();
+    if (updateDashboardValues) {
+      updateDashboardValues(summary.totalValue, summary.todaysChange);
+    }
+  }, [portfolioCompanies, updateDashboardValues]);
+
+  const fetchPortfolio = async () => {
+    const result = await getSandboxPortfolio();
+    if (result.success && result.data) {
+      const cleanedData = result.data.map((company) => ({
+        ...company,
+        shares: Math.floor(Number(company.shares)) || 1,
+      }));
+      setPortfolioCompanies(cleanedData);
+    } else {
+      console.error("Failed to fetch portfolio:", result.message);
+    }
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -20,7 +54,6 @@ const SandboxPortfolio = () => {
         setSearchResults([]);
         return;
       }
-
       setSearchMessage("Searching...");
       const result = await getStockDetails(searchTerm.trim());
 
@@ -50,24 +83,51 @@ const SandboxPortfolio = () => {
     }
   };
 
-  const addCompanyToPortfolio = (company) => {
-    if (!portfolioCompanies.some((pc) => pc.ticker === company.ticker)) {
-      setPortfolioCompanies((prevCompanies) => [
-        ...prevCompanies,
-        { ...company, shares: 1 },
-      ]);
+  const handleShareChange = async (id, newQuantity) => {
+    const quantity = Math.floor(Number(newQuantity));
+    if (isNaN(quantity) || quantity <= 0) {
+    }
+
+    const result = await updateSandboxAssetShares(id, quantity);
+    if (result.success) {
+      const updatedPortfolio = portfolioCompanies.map((company) =>
+        company.id === id ? { ...company, shares: quantity } : company
+      );
+      setPortfolioCompanies(updatedPortfolio);
+    } else {
+      alert("Failed to update shares.");
+    }
+  };
+
+  const addCompanyToPortfolio = async (company) => {
+    const existing = portfolioCompanies.find(
+      (pc) => pc.ticker === company.ticker
+    );
+
+    if (existing) {
+      setSearchMessage("Company already in portfolio.");
+      return;
+    }
+
+    const result = await addSandboxAsset(company.ticker, company.name, 1);
+    if (result.success) {
+      fetchPortfolio(); // Re-fetch the portfolio to get the updated data
       setSearchTerm("");
       setSearchResults([]);
       setSearchMessage("");
     } else {
-      setSearchMessage("Company already in portfolio.");
+      setSearchMessage(result.message || "Failed to add company.");
     }
   };
 
-  const removeCompanyFromPortfolio = (tickerToRemove) => {
-    setPortfolioCompanies((prevCompanies) =>
-      prevCompanies.filter((company) => company.ticker !== tickerToRemove)
-    );
+  const removeCompanyFromPortfolio = async (id) => {
+    // id is the sandbox_asset_id
+    const result = await removeSandboxAsset(id);
+    if (result.success) {
+      fetchPortfolio();
+    } else {
+      alert("Failed to remove company.");
+    }
   };
 
   const calculatePortfolioSummary = () => {
@@ -75,9 +135,9 @@ const SandboxPortfolio = () => {
     let todaysChange = 0;
 
     portfolioCompanies.forEach((company) => {
-      const price = parseFloat(company.price.replace("$", ""));
-      const dailyChange = parseFloat(company.dailyChange.replace("%", ""));
-      const shares = company.shares || 1;
+      const price = company.price;
+      const dailyChange = company.dailyChange;
+      const shares = Math.floor(Number(company.shares)) || 1;
 
       if (!isNaN(price) && !isNaN(shares)) {
         totalValue += price * shares;
@@ -115,7 +175,6 @@ const SandboxPortfolio = () => {
 
       {searchMessage && <p className={styles.searchMessage}>{searchMessage}</p>}
 
-      {/* Display Search Results */}
       {searchResults.length > 0 && (
         <div className={styles.searchResults}>
           <p className={styles.searchResultsTitle}>Search Results:</p>
@@ -139,17 +198,16 @@ const SandboxPortfolio = () => {
         </div>
       )}
 
-      {/* Display Portfolio Summary */}
       <div className={styles.portfolioSummary}>
         <div className={styles.summaryItem}>
-          <span className={styles.summaryLabel}>Total Value:</span>
-          <span className={styles.summaryValue}>
+          {/* <span className={styles.summaryLabel}>Total Value:</span> */}
+          {/* <span className={styles.summaryValue}>
             ${portfolioSummary.totalValue}
-          </span>
+          </span> */}
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.summaryLabel}>Today's Change:</span>
-          <span
+          {/* <span className={styles.summaryLabel}>Today's Change:</span> */}
+          {/* <span
             className={`${styles.summaryValue} ${
               portfolioSummary.todaysChange > 0
                 ? styles.positiveChange
@@ -159,11 +217,10 @@ const SandboxPortfolio = () => {
             }`}
           >
             ${portfolioSummary.todaysChange}
-          </span>
+          </span> */}
         </div>
       </div>
 
-      {/* Portfolio Companies List */}
       <div className={styles.companyList}>
         <div className={styles.companyListHeader}>
           <span className={styles.headerItem}>Company</span>
@@ -175,15 +232,43 @@ const SandboxPortfolio = () => {
         </div>
         {portfolioCompanies.length > 0 ? (
           portfolioCompanies.map((company, index) => (
-            <div key={company.ticker} className={styles.companyListItem}>
+            <div
+              key={company.id}
+              className={`${styles.companyListItem} ${
+                company.ticker && company.ticker === selectedTicker
+                  ? styles.selected
+                  : ""
+              }`}
+              onClick={() => onStockSelect(company.ticker)}
+            >
               <span className={styles.listItem}>{company.name}</span>
               <span className={styles.listItem}>{company.ticker}</span>
-              <span className={styles.listItem}>{company.price}</span>
-              <span className={styles.listItem}>{company.dailyChange}</span>
-              <span className={styles.listItem}>{company.shares}</span>
+              <span className={styles.listItem}>
+                {company.price ? `$${company.price.toFixed(2)}` : "N/A"}
+              </span>
+              <span className={styles.listItem}>
+                {company.dailyChange
+                  ? `${company.dailyChange.toFixed(2)}%`
+                  : "N/A"}
+              </span>
+              <span className={styles.listItem}>
+                <input
+                  type="number"
+                  value={Math.floor(Number(company.shares)) || 1}
+                  onChange={(e) =>
+                    handleShareChange(company.id, e.target.value)
+                  }
+                  min="1"
+                  step="1"
+                  className={styles.sharesInput}
+                />
+              </span>
               <span className={styles.listItem}>
                 <button
-                  onClick={() => removeCompanyFromPortfolio(company.ticker)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeCompanyFromPortfolio(company.id);
+                  }}
                   className={styles.removeButton}
                 >
                   Remove

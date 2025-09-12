@@ -1,4 +1,6 @@
-const { Sequelize, DataTypes } = require("sequelize");
+// server/models/Asset.js
+require("sequelize");
+const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 
 const Asset = sequelize.define(
@@ -37,9 +39,5 @@ const Asset = sequelize.define(
     createdAt: "created_at",
   }
 );
-
-// Associations
-// Asset.hasMany(UserAsset, { foreignKey: 'asset_id' });
-// Asset.hasMany(HistoricalPrice, { foreignKey: 'asset_id' });
 
 module.exports = Asset;

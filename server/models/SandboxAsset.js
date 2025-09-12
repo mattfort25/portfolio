@@ -1,13 +1,13 @@
-// server/models/UserAsset.js
+// server/models/SandboxAsset.js
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 const User = require("./User");
 const Asset = require("./Asset");
 
-const UserAsset = sequelize.define(
-  "UserAsset",
+const SandboxAsset = sequelize.define(
+  "SandboxAsset",
   {
-    user_asset_id: {
+    sandbox_asset_id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
@@ -18,27 +18,33 @@ const UserAsset = sequelize.define(
         model: "Users",
         key: "user_id",
       },
+      allowNull: false,
     },
     asset_id: {
       type: DataTypes.UUID,
       references: {
-        model: "Assets", // Name of the table
+        model: "Assets",
         key: "asset_id",
       },
-    },
-    added_at: {
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.NOW,
       allowNull: false,
     },
     quantity: {
       type: DataTypes.DECIMAL(18, 4),
-      allowNull: true,
+      allowNull: false,
+      defaultValue: 1,
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
+    createdAt: "added_at",
+    updatedAt: "updated_at",
+    indexes: [
+      {
+        unique: true,
+        fields: ["user_id", "asset_id"],
+      },
+    ],
   }
 );
 
-module.exports = UserAsset;
+module.exports = SandboxAsset;
