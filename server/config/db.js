@@ -40,6 +40,7 @@ const connectDB = async () => {
     );
   } catch (error) {
     console.error("Unable to connect to the database:", error);
+    // It's good practice to exit the process on critical failures.
     process.exit(1);
   }
 };
