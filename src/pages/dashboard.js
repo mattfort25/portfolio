@@ -41,7 +41,7 @@ export default function Dashboard() {
               <p className={styles.valueText}>${totalValue}</p>
             </div>
             <div className={styles.todaysChangeCard}>
-              <h2 className={styles.cardHeader}>Today's Change</h2>
+              <h2 className={styles.cardHeader}>Todays Change</h2>
               <p className={styles.valueText}>${todaysChange}</p>
             </div>
             <AllNews selectedTicker={selectedTicker} />{" "}

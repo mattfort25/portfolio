@@ -19,6 +19,30 @@ const SandboxPortfolio = ({
   const [portfolioCompanies, setPortfolioCompanies] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
 
+  // Move calculatePortfolioSummary outside useEffect
+  const calculatePortfolioSummary = () => {
+    let totalValue = 0;
+    let todaysChange = 0;
+
+    portfolioCompanies.forEach((company) => {
+      const price = company.price;
+      const dailyChange = company.dailyChange;
+      const shares = Math.floor(Number(company.shares)) || 1;
+
+      if (!isNaN(price) && !isNaN(shares)) {
+        totalValue += price * shares;
+        if (!isNaN(dailyChange)) {
+          todaysChange += price * (dailyChange / 100) * shares;
+        }
+      }
+    });
+
+    return {
+      totalValue: totalValue.toFixed(2),
+      todaysChange: todaysChange.toFixed(2),
+    };
+  };
+
   useEffect(() => {
     fetchPortfolio();
   }, []);
@@ -28,7 +52,7 @@ const SandboxPortfolio = ({
     if (updateDashboardValues) {
       updateDashboardValues(summary.totalValue, summary.todaysChange);
     }
-  }, [portfolioCompanies, updateDashboardValues]);
+  }, [portfolioCompanies, updateDashboardValues, calculatePortfolioSummary]); // Add calculatePortfolioSummary to dependencies
 
   const fetchPortfolio = async () => {
     const result = await getSandboxPortfolio();
@@ -86,6 +110,7 @@ const SandboxPortfolio = ({
   const handleShareChange = async (id, newQuantity) => {
     const quantity = Math.floor(Number(newQuantity));
     if (isNaN(quantity) || quantity <= 0) {
+      return; // Added return statement here
     }
 
     const result = await updateSandboxAssetShares(id, quantity);
@@ -130,29 +155,7 @@ const SandboxPortfolio = ({
     }
   };
 
-  const calculatePortfolioSummary = () => {
-    let totalValue = 0;
-    let todaysChange = 0;
-
-    portfolioCompanies.forEach((company) => {
-      const price = company.price;
-      const dailyChange = company.dailyChange;
-      const shares = Math.floor(Number(company.shares)) || 1;
-
-      if (!isNaN(price) && !isNaN(shares)) {
-        totalValue += price * shares;
-        if (!isNaN(dailyChange)) {
-          todaysChange += price * (dailyChange / 100) * shares;
-        }
-      }
-    });
-
-    return {
-      totalValue: totalValue.toFixed(2),
-      todaysChange: todaysChange.toFixed(2),
-    };
-  };
-
+  // Now this will work correctly
   const portfolioSummary = calculatePortfolioSummary();
 
   return (

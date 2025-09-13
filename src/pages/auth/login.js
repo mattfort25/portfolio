@@ -172,7 +172,7 @@ export default function Login() {
               className={styles["register-link"]}
               onClick={() => router.push("/auth/signup")}
             >
-              Don't have an account? Register
+              Dont have an account Register
             </Button>
           </div>
 
