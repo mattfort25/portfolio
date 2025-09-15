@@ -26,9 +26,28 @@ const app = express();
 // Importing association
 const defineAssociations = require("./models/associations");
 
+// Cors origin setup
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : [REDIRECT_URL || "http://localhost:3000"];
+
 app.use(
-  cors({ origin: REDIRECT_URL || "http://localhost:3000", credentials: true })
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.error("Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
+  })
 );
+// app.use(
+//   cors({ origin: REDIRECT_URL || "http://localhost:3000", credentials: true })
+// );
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true })); //  To parse the request body for req.body
