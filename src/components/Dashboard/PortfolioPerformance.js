@@ -39,15 +39,15 @@ const PortfolioPerformance = ({ selectedTicker }) => {
       );
 
       if (result.success && result.data) {
-        const historyData = Object.values(result.data);
+        const historyData = result.data; // result.data is already an array, no need for Object.values
         if (historyData.length === 0) {
           setChartMessage("No historical data available for this stock.");
           return;
         }
 
         // Extract dates & prices
-        const labels = historyData.map((item) => item.Date);
-        const dataPoints = historyData.map((item) => item.Open);
+        const labels = historyData.map((item) => item.date);
+        const dataPoints = historyData.map((item) => item.open);
 
         // Always destroy old chart before creating a new one
         if (chartInstance.current) {

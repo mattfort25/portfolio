@@ -16,7 +16,10 @@ exports.getStockHistoryData = async (req, res) => {
     const response = await axios.get(externalApiUrl);
     console.log("External API response:", response.data);
 
-    res.status(200).json({ success: true, history: response.data.history });
+    res.status(200).json({
+      success: true,
+      data: response.data.history, // Extract the history array from the external API response
+    });
   } catch (error) {
     console.error(
       "Error fetching stock history from external API:",

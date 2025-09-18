@@ -347,7 +347,9 @@ export async function getStockHistory(ticker, interval, range) {
 
     const data = await response.json();
     if (response.ok) {
-      return { success: true, data: data.history };
+      console.log("API Response Data:", data);
+      console.log("History Data:", data.data);
+      return { success: true, data: data.data };
     } else {
       return {
         success: false,
