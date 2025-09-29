@@ -1,4 +1,3 @@
-// src/components/Dashboard/SandboxPortfolio.js
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/SandboxPortfolio.module.css";
 import {
@@ -7,19 +6,22 @@ import {
   addSandboxAsset,
   removeSandboxAsset,
   updateSandboxAssetShares,
-} from "@/services";
+  runSimulation,
+} from "../../services";
 
 const SandboxPortfolio = ({
   updateDashboardValues,
   onStockSelect,
   selectedTicker,
+  onSimulationComplete,
+  portfolioCompanies,
+  setPortfolioCompanies,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [portfolioCompanies, setPortfolioCompanies] = useState([]);
   const [searchMessage, setSearchMessage] = useState("");
+  const [isLoadingSimulation, setIsLoadingSimulation] = useState(false);
 
-  // Move calculatePortfolioSummary outside useEffect
   const calculatePortfolioSummary = () => {
     let totalValue = 0;
     let todaysChange = 0;
@@ -52,7 +54,14 @@ const SandboxPortfolio = ({
     if (updateDashboardValues) {
       updateDashboardValues(summary.totalValue, summary.todaysChange);
     }
-  }, [portfolioCompanies, updateDashboardValues, calculatePortfolioSummary]); // Add calculatePortfolioSummary to dependencies
+  }, [portfolioCompanies, updateDashboardValues, calculatePortfolioSummary]);
+
+  // Auto-run simulation whenever portfolio changes
+  useEffect(() => {
+    if (portfolioCompanies.length > 0) {
+      handleRunSimulation();
+    }
+  }, [portfolioCompanies]);
 
   const fetchPortfolio = async () => {
     const result = await getSandboxPortfolio();
@@ -110,7 +119,7 @@ const SandboxPortfolio = ({
   const handleShareChange = async (id, newQuantity) => {
     const quantity = Math.floor(Number(newQuantity));
     if (isNaN(quantity) || quantity <= 0) {
-      return; // Added return statement here
+      return;
     }
 
     const result = await updateSandboxAssetShares(id, quantity);
@@ -136,7 +145,7 @@ const SandboxPortfolio = ({
 
     const result = await addSandboxAsset(company.ticker, company.name, 1);
     if (result.success) {
-      fetchPortfolio(); // Re-fetch the portfolio to get the updated data
+      fetchPortfolio();
       setSearchTerm("");
       setSearchResults([]);
       setSearchMessage("");
@@ -146,7 +155,6 @@ const SandboxPortfolio = ({
   };
 
   const removeCompanyFromPortfolio = async (id) => {
-    // id is the sandbox_asset_id
     const result = await removeSandboxAsset(id);
     if (result.success) {
       fetchPortfolio();
@@ -155,7 +163,40 @@ const SandboxPortfolio = ({
     }
   };
 
-  // Now this will work correctly
+  const handleRunSimulation = async () => {
+    if (portfolioCompanies.length === 0) {
+      return;
+    }
+
+    setIsLoadingSimulation(true);
+
+    try {
+      const portfolioData = {};
+      const weight = 1 / portfolioCompanies.length;
+      portfolioCompanies.forEach((company) => {
+        portfolioData[company.ticker] = weight;
+      });
+
+      const simulationConfig = {
+        portfolio: portfolioData,
+        horizon_days: 21,
+        iterations: 100,
+      };
+
+      const result = await runSimulation(simulationConfig);
+      if (result.success) {
+        onSimulationComplete(result.data);
+      } else {
+        alert(result.message || "Failed to run simulation.");
+      }
+    } catch (error) {
+      console.error("Simulation error:", error);
+      alert("An error occurred during the simulation.");
+    } finally {
+      setIsLoadingSimulation(false);
+    }
+  };
+
   const portfolioSummary = calculatePortfolioSummary();
 
   return (
@@ -173,7 +214,7 @@ const SandboxPortfolio = ({
         />
         <button onClick={handleSearch} className={styles.searchButton}>
           Search
-        </button>{" "}
+        </button>
       </div>
 
       {searchMessage && <p className={styles.searchMessage}>{searchMessage}</p>}
@@ -202,27 +243,21 @@ const SandboxPortfolio = ({
       )}
 
       <div className={styles.portfolioSummary}>
-        <div className={styles.summaryItem}>
-          {/* <span className={styles.summaryLabel}>Total Value:</span> */}
-          {/* <span className={styles.summaryValue}>
-            ${portfolioSummary.totalValue}
-          </span> */}
-        </div>
-        <div className={styles.summaryItem}>
-          {/* <span className={styles.summaryLabel}>Today's Change:</span> */}
-          {/* <span
-            className={`${styles.summaryValue} ${
-              portfolioSummary.todaysChange > 0
-                ? styles.positiveChange
-                : portfolioSummary.todaysChange < 0
-                ? styles.negativeChange
-                : ""
-            }`}
-          >
-            ${portfolioSummary.todaysChange}
-          </span> */}
-        </div>
+        <div className={styles.summaryItem}></div>
+        <div className={styles.summaryItem}></div>
       </div>
+
+      {/* <div className={styles.simulationSection}>
+        <button
+          className={styles.simulationButton}
+          onClick={handleRunSimulation}
+          disabled={isLoadingSimulation}
+        >
+          {isLoadingSimulation
+            ? "Running Simulation..."
+            : "Run Portfolio Simulation"}
+        </button>
+      </div> */}
 
       <div className={styles.companyList}>
         <div className={styles.companyListHeader}>
@@ -231,7 +266,7 @@ const SandboxPortfolio = ({
           <span className={styles.headerItem}>Price</span>
           <span className={styles.headerItem}>Daily Change</span>
           <span className={styles.headerItem}>Shares</span>
-          <span className={styles.headerItem}>Action</span>{" "}
+          <span className={styles.headerItem}>Action</span>
         </div>
         {portfolioCompanies.length > 0 ? (
           portfolioCompanies.map((company, index) => (

@@ -383,3 +383,25 @@ export const getStockNews = async (ticker) => {
     return { success: false, message: "Network error occurred." };
   }
 };
+
+export async function runSimulation(portfolioData) {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/simulate/simple`, {
+      method: "POST",
+      body: JSON.stringify(portfolioData),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, data: data };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to run simulation.",
+      };
+    }
+  } catch (error) {
+    console.error("Error running simulation:", error);
+    return { success: false, message: "Network error occurred." };
+  }
+}

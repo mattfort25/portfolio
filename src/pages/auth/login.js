@@ -91,6 +91,7 @@ export default function Login() {
               <Form.Control
                 className={styles["input"]}
                 type="email"
+                placeholder="Enter your email address"
                 {...register("email", { required: "Email is required" })}
                 isInvalid={touchedFields.email && errors.email}
               />
@@ -172,7 +173,7 @@ export default function Login() {
               className={styles["register-link"]}
               onClick={() => router.push("/auth/signup")}
             >
-              Dont have an account Register
+              Do not have an account? Sign up now!
             </Button>
           </div>
 

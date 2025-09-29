@@ -6,7 +6,7 @@ import { AuthProvider } from "../context/AuthContext.js";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useRouter } from "next/router";
 
-const publicRoutes = ["/auth/login", "/auth/signup", "/"];
+const publicRoutes = ["/auth/login", "/auth/signup", "/", "/about", "/demo"];
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const isPublicRoute = publicRoutes.includes(router.pathname);

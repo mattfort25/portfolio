@@ -1,6 +1,6 @@
 // server/server.js
 require("dotenv").config();
-const { sequelize, connectDB } = require("./config/db");
+const { sequelize, connectDB, checkConnection } = require("./config/db");
 const express = require("express");
 const { REDIRECT_URL } = require("./utils/general");
 const cors = require("cors");
@@ -13,6 +13,7 @@ const stockRoutes = require("./routes/stockRoutes");
 const sandboxRoutes = require("./routes/sandboxRoutes");
 const stockHistoryRoutes = require("./routes/stockHistoryRoutes");
 const stockNewsRoutes = require("./routes/stockNewsRoutes");
+const simulationRoutes = require("./routes/simulationRoutes");
 
 // Importing models
 const User = require("./models/User");
@@ -71,7 +72,18 @@ app.use("/api/stocks", stockRoutes);
 app.use("/api/sandbox", sandboxRoutes);
 app.use("/api/stocks", stockHistoryRoutes);
 app.use("/api/stocks", stockNewsRoutes);
+app.use("/api/simulate", simulationRoutes);
 
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+// Periodic database connection health check
+setInterval(async () => {
+  const isConnected = await checkConnection();
+  if (!isConnected) {
+    console.error("Periodic health check: Database connection is down");
+  } else {
+    console.log("Periodic health check: Database connection is healthy");
+  }
+}, 300000);

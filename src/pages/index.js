@@ -11,19 +11,19 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Financial Profile – Enterprise Risk Management</title>
+        <title>Metanym – Actionable Geopolitical Intelligence</title>
         <meta
           name="description"
-          content="Track your investments, get real-time news, and manage your portfolio with intelligent risk management."
+          content="Actionable geopolitical intelligence at your fingertips. Transform complex global events into clear, structured insights with real-time monitoring and risk assessments."
         />
         <link rel="icon" href="/favicon.ico" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <link
           rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         />
       </Head>
 

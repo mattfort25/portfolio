@@ -1,6 +1,20 @@
 :root {
+  /* Existing variables */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Design Tokens */
+  --brand-navy: #0b2340;
+  --brand-silver: #c9d6df;
+  --neutral-900: #0f1720;
+  --neutral-700: #4b5563;
+  --neutral-500: #9aa5b1;
+  --bg: #f6f8fa;
+  --card: #ffffff;
+  --radius: 8px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 32, 0.06);
+  --shadow-md: 0 6px 18px rgba(15, 23, 32, 0.12);
+  --gap: 12px;
 }
 
 @media (prefers-color-scheme: dark) {

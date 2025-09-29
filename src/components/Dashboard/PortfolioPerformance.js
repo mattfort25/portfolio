@@ -1,8 +1,7 @@
-// src/components/Dashboard/PortfolioPerformance.js
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import styles from "../../styles/Dashboard/PortfolioPerformance.module.css";
-import { getStockHistory } from "@/services";
+import { getStockHistory } from "../../services";
 
 const timeRanges = [
   { label: "1M", interval: "1d", range: "1mo" },
@@ -12,9 +11,16 @@ const timeRanges = [
   { label: "YTD", interval: "1d", range: "ytd" },
 ];
 
-const PortfolioPerformance = ({ selectedTicker }) => {
+const PortfolioPerformance = ({
+  selectedTicker,
+  simulationResults,
+  portfolioCompanies,
+  onStockSelect,
+}) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const simChartRef = useRef(null);
+  const simChartInstance = useRef(null);
   const [selectedRange, setSelectedRange] = useState(timeRanges[0]);
   const [chartMessage, setChartMessage] = useState(
     "Select a stock to view its performance."
@@ -39,17 +45,15 @@ const PortfolioPerformance = ({ selectedTicker }) => {
       );
 
       if (result.success && result.data) {
-        const historyData = result.data; // result.data is already an array, no need for Object.values
+        const historyData = result.data;
         if (historyData.length === 0) {
           setChartMessage("No historical data available for this stock.");
           return;
         }
 
-        // Extract dates & prices
         const labels = historyData.map((item) => item.date);
         const dataPoints = historyData.map((item) => item.open);
 
-        // Always destroy old chart before creating a new one
         if (chartInstance.current) {
           chartInstance.current.destroy();
           chartInstance.current = null;
@@ -85,14 +89,14 @@ const PortfolioPerformance = ({ selectedTicker }) => {
                   ticks: {
                     display: true,
                     autoSkip: true,
-                    maxTicksLimit: 6, // show fewer dates
+                    maxTicksLimit: 6,
                   },
                 },
                 y: {
                   grid: { display: true },
                   ticks: {
                     display: true,
-                    callback: (value) => "$" + value.toFixed(2), // format as price
+                    callback: (value) => "$" + value.toFixed(2),
                   },
                 },
               },
@@ -114,9 +118,140 @@ const PortfolioPerformance = ({ selectedTicker }) => {
     };
   }, [selectedTicker, selectedRange]);
 
+  useEffect(() => {
+    if (simChartInstance.current) {
+      simChartInstance.current.destroy();
+    }
+
+    if (simulationResults && simulationResults.simulated_returns_preview) {
+      const returns = simulationResults.simulated_returns_preview;
+      const ctx = simChartRef.current.getContext("2d");
+
+      const bins = 20;
+      const minReturn = Math.min(...returns);
+      const maxReturn = Math.max(...returns);
+      const range = maxReturn - minReturn;
+      const binSize = range / bins;
+
+      const histogram = new Array(bins).fill(0);
+      const labels = [];
+      for (let i = 0; i < bins; i++) {
+        const lowerBound = minReturn + i * binSize;
+        const upperBound = lowerBound + binSize;
+        labels.push(
+          `${(lowerBound * 100).toFixed(1)}% to ${(upperBound * 100).toFixed(
+            1
+          )}%`
+        );
+      }
+
+      returns.forEach((r) => {
+        let binIndex = Math.floor((r - minReturn) / binSize);
+        if (binIndex === bins) {
+          binIndex--;
+        }
+        histogram[binIndex]++;
+      });
+
+      simChartInstance.current = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Frequency",
+              data: histogram,
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+              borderColor: "rgb(255, 99, 132)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: true,
+              text: "Simulated Return Distribution (Next 21 Days)",
+            },
+            tooltip: {
+              callbacks: {
+                title: (context) => {
+                  return context[0].label;
+                },
+                label: (context) => {
+                  const frequency = context.raw;
+                  const totalSimulations = returns.length;
+                  const percentage = (
+                    (frequency / totalSimulations) *
+                    100
+                  ).toFixed(2);
+                  return `This outcome occurred in ${percentage}% of simulations. The wider the graph, the more volatile your portfolio.`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Return %",
+              },
+              ticks: {
+                maxRotation: 45,
+                minRotation: 45,
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Frequency",
+              },
+            },
+          },
+        },
+      });
+    }
+  }, [simulationResults]);
+
   return (
     <div className={styles.portfolioPerformanceCard}>
       <h2 className={styles.cardHeader}>Portfolio Performance</h2>
+
+      <div className={styles.stockBadges}>
+        {portfolioCompanies && portfolioCompanies.length > 0 ? (
+          portfolioCompanies.map((company) => (
+            <div
+              key={company.ticker}
+              className={`${styles.stockBadge} ${
+                selectedTicker === company.ticker ? styles.activeBadge : ""
+              }`}
+              onClick={() => onStockSelect(company.ticker)}
+            >
+              <span className={styles.badgeTicker}>{company.ticker}</span>
+              <span
+                className={`${styles.badgeChange} ${
+                  company.dailyChange > 0
+                    ? styles.positiveChange
+                    : styles.negativeChange
+                }`}
+              >
+                {company.dailyChange > 0 ? "▲" : "▼"}{" "}
+                {Math.abs(company.dailyChange).toFixed(2)}%
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className={styles.noStocksMessage}>
+            Add stocks in the sandbox portfolio to see them here.
+          </p>
+        )}
+      </div>
+
       <div className={styles.chartContainer}>
         {selectedTicker && <canvas ref={chartRef}></canvas>}
         {!selectedTicker && (
@@ -135,6 +270,42 @@ const PortfolioPerformance = ({ selectedTicker }) => {
             {range.label}
           </button>
         ))}
+      </div>
+
+      <div className={styles.simulationResults}>
+        <h3 className={styles.cardHeader}>Simulation Results</h3>
+        {simulationResults ? (
+          <div className={styles.metrics}>
+            <p>
+              **VaR 95%**:{" "}
+              <span>
+                {(simulationResults.metrics.VaR_95 * 100).toFixed(2)}%
+              </span>
+            </p>
+            <p>
+              **CVaR 95%**:{" "}
+              <span>
+                {(simulationResults.metrics.CVaR_95 * 100).toFixed(2)}%
+              </span>
+            </p>
+            <p>
+              **Mean Return**:{" "}
+              <span>
+                {(simulationResults.metrics.mean_return * 100).toFixed(2)}%
+              </span>
+            </p>
+          </div>
+        ) : (
+          <p className={styles.noResults}>
+            **Run a simulation to see portfolio risk metrics.**
+          </p>
+        )}
+      </div>
+
+      <div className={styles.simulationChartContainer}>
+        {simulationResults && simulationResults.simulated_returns_preview && (
+          <canvas ref={simChartRef}></canvas>
+        )}
       </div>
     </div>
   );

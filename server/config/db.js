@@ -15,6 +15,18 @@ const sequelize = dbUrl
         },
       },
       logging: console.log,
+      // Connection pool configuration
+      pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+        evict: 1000,
+      },
+      retry: {
+        max: 3,
+        timeout: 5000,
+      },
     })
   : new Sequelize(
       process.env.DB_NAME,
@@ -28,6 +40,17 @@ const sequelize = dbUrl
           ssl: { rejectUnauthorized: false },
         },
         logging: console.log,
+        pool: {
+          max: 10,
+          min: 0,
+          acquire: 30000,
+          idle: 10000,
+          evict: 1000,
+        },
+        retry: {
+          max: 3,
+          timeout: 5000,
+        },
       }
     );
 
@@ -38,6 +61,12 @@ const connectDB = async () => {
     console.log(
       "Connection to the database has been established successfully."
     );
+    console.log("Database connection pool configured with:", {
+      max: sequelize.options.pool.max,
+      min: sequelize.options.pool.min,
+      acquire: sequelize.options.pool.acquire,
+      idle: sequelize.options.pool.idle,
+    });
   } catch (error) {
     console.error("Unable to connect to the database:", error);
     // It's good practice to exit the process on critical failures.
@@ -45,7 +74,19 @@ const connectDB = async () => {
   }
 };
 
+// Function to check and reconnect if needed
+const checkConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    return true;
+  } catch (error) {
+    console.error("Database connection check failed:", error.message);
+    return false;
+  }
+};
+
 module.exports = {
   sequelize,
   connectDB,
+  checkConnection,
 };

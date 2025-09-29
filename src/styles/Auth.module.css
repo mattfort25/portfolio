@@ -48,7 +48,8 @@
   font-size: 0.95rem;
   color: #555;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 700;
+  text-align: left;
 }
 
 .input,
@@ -60,6 +61,7 @@
   font-size: 1rem;
   color: #333;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
 }
 
 .input:focus,
@@ -115,6 +117,7 @@
   position: relative;
   text-align: center;
   margin: 20px 0;
+  z-index: 1;
 }
 
 .or-signin-text span {
@@ -122,6 +125,8 @@
   padding: 0 15px;
   color: #666;
   font-size: 0.9rem;
+  position: relative;
+  z-index: 2;
 }
 
 .or-signin-text::before {
@@ -132,6 +137,7 @@
   right: 0;
   height: 1px;
   background: #ddd;
+  z-index: 1;
 }
 
 /* Register link */

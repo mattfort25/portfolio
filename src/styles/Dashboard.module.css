@@ -1,110 +1,200 @@
-.dashboardContainer {
-              padding: 2rem;
-              max-width: 1400px;
-              margin: 0 auto;
-              font-family: sans-serif;
-              background-color: #f8f9fa;
-              border-radius: 12px;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-              margin-top: 2rem;
+.appShell {
+  display: flex;
+  gap: 24px;
+  padding: 20px 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.navCard {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.navHeader {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--neutral-900);
+}
+
+.navPills {
+  display: flex;
+  flex-direction: column;
+}
+
+.navLink {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  color: var(--neutral-700);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.navLink:hover {
+  background-color: #f1f3f5;
+}
+
+.navLinkActive {
+  composes: navLink;
+  background-color: var(--brand-silver);
+  font-weight: 600;
+  color: var(--brand-navy);
+}
+
+/* Main Content Area */
+.mainContent {
+  flex-grow: 1;
 }
 
 .dashboardTitle {
-              font-size: 2.5rem;
-              font-weight: bold;
-              color: #333;
-              margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--neutral-900);
+  margin-bottom: 20px;
 }
 
-.topSection {
-              display: flex;
-              gap: 2rem;
-              margin-bottom: 2rem;
-              flex-wrap: wrap;
+/* KPI Tiles */
+.kpiRow {
+  display: flex;
+  gap: var(--gap);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.valueAndNewsSection {
-              display: flex;
-              flex-direction: column;
-              gap: 1.5rem;
-              flex: 1;
-              min-width: 300px;
+.kpiTile {
+  flex: 1;
+  height: 56px;
+  min-width: 150px;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 35, 64, 0.02),
+    rgba(11, 35, 64, 0.01)
+  );
+  border-radius: 6px;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.totalValueCard,
-.todaysChangeCard {
-              background-color: #ffffff;
-              border-radius: 12px;
-              padding: 1.5rem;
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.kpiTitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--neutral-700);
+  margin: 0;
 }
 
-.cardHeader {
-              font-size: 1.1rem;
-              color: #666;
-              margin-bottom: 0.5rem;
+.kpiValue {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--brand-navy);
+  margin: 0;
 }
 
-.valueText {
-              font-size: 1.8rem;
-              font-weight: bold;
-              color: #333;
+/* Main Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
 }
 
-.bottomSection {
-              margin-top: 2rem;
+.mainPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-@media (prefers-color-scheme: dark) {
-              .dashboardContainer {
-                            background-color: #1a1a1a;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-              }
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-              .dashboardTitle {
-                            color: #f0f0f0;
-              }
+/* New Component Styles */
+.card {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+}
 
-              .totalValueCard,
-              .todaysChangeCard {
-                            background-color: #2a2a2a;
-                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-              }
+.heatmapGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-gap: 8px;
+  padding: 8px;
+}
 
-              .cardHeader {
-                            color: #bbb;
-              }
+.heatmapTile {
+  border-radius: 6px;
+  padding: 8px;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  text-align: center;
+}
 
-              .valueText {
-                            color: #f0f0f0;
-              }
+.newsList,
+.eventsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.newsItem,
+.eventItem {
+  padding: 10px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.newsItem:last-child,
+.eventItem:last-child {
+  border-bottom: none;
+}
+
+.newsTitle {
+  font-weight: 600;
+}
+
+.eventTitle {
+  font-weight: 600;
+}
+
+.mutedSmall {
+  font-size: 12px;
+  color: var(--neutral-500);
 }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-              .topSection {
-                            flex-direction: column;
-              }
-
-              .valueAndNewsSection {
-                            min-width: unset;
-              }
+  .appShell {
+    flex-direction: column;
+  }
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
-              .dashboardContainer {
-                            padding: 1rem;
-                            margin-top: 1rem;
-              }
-
-              .dashboardTitle {
-                            font-size: 2rem;
-              }
-
-              .topSection {
-                            gap: 1.5rem;
-              }
-
-              .valueAndNewsSection {
-                            gap: 1rem;
-              }           }
+  .appShell {
+    padding: 10px;
+    gap: 10px;
+  }
+  .sidebar {
+    width: 100%;
+  }
+}

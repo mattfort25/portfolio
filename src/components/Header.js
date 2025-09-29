@@ -19,7 +19,6 @@ const Header = () => {
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
 
   useEffect(() => {
-    // Logic for the public-facing header's scroll
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -33,7 +32,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     document.addEventListener("click", handleClickOutside);
 
-    // Logic for fetching user profile
     if (token) {
       const fetchUserProfileData = async () => {
         try {
@@ -41,11 +39,9 @@ const Header = () => {
           if (result.success && result.data) {
             setUserName(result.data.name);
           } else {
-            console.error("Failed to fetch user profile:", result.message);
             logout();
           }
         } catch (error) {
-          console.error("Error fetching user profile:", error);
           logout();
         }
       };
@@ -68,7 +64,6 @@ const Header = () => {
     router.push("/auth/login");
   };
 
-  // Hover handlers for dropdowns
   const handleMouseEnter = (dropdown) => {
     if (dropdownTimeout) {
       clearTimeout(dropdownTimeout);
@@ -78,7 +73,6 @@ const Header = () => {
   };
 
   const handleMouseLeave = () => {
-    // Add a small delay before hiding the dropdown
     const timeout = setTimeout(() => {
       setActiveDropdown(null);
     }, 150);
@@ -89,7 +83,6 @@ const Header = () => {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.brand}>
-          {/* <img src="/logo.jpg" alt="Financial Profile" height="28" /> */}
           Metametanym
         </Link>
 
@@ -106,26 +99,49 @@ const Header = () => {
           className={`${styles.navMenu} ${mobileMenuOpen ? styles.active : ""}`}
         >
           {token ? (
-            // Logged-in navigation
             <>
-              <Link href="/dashboard" className={styles.navLink}>
+              <Link
+                href="/dashboard"
+                className={`${styles.navLink} ${
+                  router.pathname === "/dashboard" ? styles.activeLink : ""
+                }`}
+              >
                 Dashboard
               </Link>
-              <Link href="/assets" className={styles.navLink}>
+              <Link
+                href="/assets"
+                className={`${styles.navLink} ${
+                  router.pathname === "/assets" ? styles.activeLink : ""
+                }`}
+              >
                 My Assets
               </Link>
-              <Link href="/market" className={styles.navLink}>
+              <Link
+                href="/market"
+                className={`${styles.navLink} ${
+                  router.pathname === "/market" ? styles.activeLink : ""
+                }`}
+              >
                 Market Data
               </Link>
-              <Link href="/news" className={styles.navLink}>
+              <Link
+                href="/news"
+                className={`${styles.navLink} ${
+                  router.pathname === "/news" ? styles.activeLink : ""
+                }`}
+              >
                 News & Blog
               </Link>
-              <Link href="/pricing" className={styles.navLink}>
+              <Link
+                href="/pricing"
+                className={`${styles.navLink} ${
+                  router.pathname === "/pricing" ? styles.activeLink : ""
+                }`}
+              >
                 Pricing
               </Link>
             </>
           ) : (
-            // Public-facing navigation with hover dropdowns
             <>
               <div
                 className={styles.dropdown}
@@ -207,7 +223,7 @@ const Header = () => {
                       <small>Market, news, ESG, custodian connectors</small>
                     </a>
                     <a href="#">
-                      Cloud & On‑Prem Options
+                      Cloud & On-Prem Options
                       <small>Private deployments for regulated firms</small>
                     </a>
                     <a href="#">
@@ -239,10 +255,20 @@ const Header = () => {
                 </div>
               </div>
 
-              <Link href="#" className={styles.navLink}>
+              <Link
+                href="#"
+                className={`${styles.navLink} ${
+                  router.pathname === "/clients" ? styles.activeLink : ""
+                }`}
+              >
                 Our Clients
               </Link>
-              <Link href="#" className={styles.navLink}>
+              <Link
+                href="/about"
+                className={`${styles.navLink} ${
+                  router.pathname === "/about" ? styles.activeLink : ""
+                }`}
+              >
                 About Us
               </Link>
             </>
@@ -280,8 +306,8 @@ const Header = () => {
                 <Link href="/auth/login" className={styles.loginBtn}>
                   Login
                 </Link>
-                <Link href="/auth/signup" className={styles.registerBtn}>
-                  Register Now
+                <Link href="/demo" className={styles.registerBtn}>
+                  Request a Demo
                 </Link>
               </>
             )}

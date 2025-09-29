@@ -40,8 +40,8 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.brand}>
-          <img src="/logo.jpg" alt="Financial Profile" height="28" />
-          Financial Profile
+          <img src="/logo.jpg" alt="Metanym" height="28" />
+          Metanym
         </Link>
 
         <button
@@ -190,7 +190,7 @@ export default function Navbar() {
           <Link href="#" className={styles.navLink}>
             Our Clients
           </Link>
-          <Link href="#" className={styles.navLink}>
+          <Link href="/about" className={styles.navLink}>
             About Us
           </Link>
 
@@ -198,8 +198,8 @@ export default function Navbar() {
             <Link href="/auth/login" className={styles.loginBtn}>
               Login
             </Link>
-            <Link href="/auth/signup" className={styles.registerBtn}>
-              Register Now
+            <Link href="/demo" className={styles.registerBtn}>
+              Request a Demo
             </Link>
           </div>
         </div>
