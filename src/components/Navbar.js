@@ -40,7 +40,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.brand}>
-          <img src="/logo.jpg" alt="Metanym" height="28" />
+          <Image> src="/logo.jpg" alt="Metanym" height="28" </Image>
           Metanym
         </Link>
 

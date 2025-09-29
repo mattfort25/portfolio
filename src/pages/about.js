@@ -42,11 +42,11 @@ export default function About() {
                 </h2>
                 <p className={styles.missionText}>
                   Metanym was built with a clear mission: to make sense of the
-                  world's complexity. We believe that actionable geopolitical
-                  intelligence should be accessible, structured, and grounded in
-                  both real-time signals and historical context. Whether for
-                  risk management, strategy, or awareness, Metanym is designed
-                  to help users move from uncertainty to clarity.
+                  world&apos;s complexity. We believe that actionable
+                  geopolitical intelligence should be accessible, structured,
+                  and grounded in both real-time signals and historical context.
+                  Whether for risk management, strategy, or awareness, Metanym
+                  is designed to help users move from uncertainty to clarity.
                 </p>
               </div>
 
@@ -54,11 +54,12 @@ export default function About() {
               <div className={styles.trustSection}>
                 <h3 className={styles.subsectionTitle}>Trust & Credibility</h3>
                 <p className={styles.trustText}>
-                  We know that decisions demand confidence. That's why Metanym
-                  emphasizes transparency in sourcing, clarity in methodology,
-                  and rigor in analysis. Our platform provides case studies,
-                  sample reports, and ongoing thought leadership so users can
-                  see the intelligence in action before they act on it.
+                  We know that decisions demand confidence. That&apos;s why
+                  Metanym emphasizes transparency in sourcing, clarity in
+                  methodology, and rigor in analysis. Our platform provides case
+                  studies, sample reports, and ongoing thought leadership so
+                  users can see the intelligence in action before they act on
+                  it.
                 </p>
               </div>
 

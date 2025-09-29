@@ -5,7 +5,7 @@ export default function Benefits() {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2 className={styles.title}>Use Cases / Who It's For</h2>
+          <h2 className={styles.title}>Use Cases / Who It&apos;t For</h2>
           <p className={styles.subtitle}>
             Metanym supports professionals across sectors where geopolitical
             clarity is critical:

@@ -79,9 +79,9 @@ export default function Demo() {
               request and contact you within 24 hours to schedule your
               personalized demo.
             </p>
-            <a href="/" className={styles.backButton}>
-              Return to Homepage
-            </a>
+            <Link href="/">
+              <a>Home</a>
+            </Link>
           </div>
         </div>
       </div>
