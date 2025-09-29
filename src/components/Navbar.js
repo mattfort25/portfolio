@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -40,7 +41,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.brand}>
-          <Image> src="/logo.jpg" alt="Metanym" height="28" </Image>
+          <Image src="/logo.jpg" alt="Company Logo" width={120} height={28} />
           Metanym
         </Link>
 

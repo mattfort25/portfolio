@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Demo.module.css";
+import Link from "next/link";
 
 export default function Demo() {
   const [formData, setFormData] = useState({
@@ -125,7 +126,7 @@ export default function Demo() {
               {/* Sub-Header */}
               <div className={styles.subHeader}>
                 <p className={styles.subHeaderText}>
-                  Whether you're monitoring emerging risks, evaluating
+                  Whether you&quot;re monitoring emerging risks, evaluating
                   investments, or preparing policy responses, Metanym delivers
                   the insights you need—when you need them.
                 </p>
