@@ -54,7 +54,7 @@ const SandboxPortfolio = ({
     if (updateDashboardValues) {
       updateDashboardValues(summary.totalValue, summary.todaysChange);
     }
-  }, [portfolioCompanies, updateDashboardValues, calculatePortfolioSummary]);
+  }, [portfolioCompanies, updateDashboardValues]);
 
   // Auto-run simulation whenever portfolio changes
   useEffect(() => {
@@ -91,19 +91,26 @@ const SandboxPortfolio = ({
       const result = await getStockDetails(searchTerm.trim());
 
       if (result.success && result.data) {
+        const stockData = result.data;
         setSearchResults([
           {
-            name:
-              result.data.displayName ||
-              result.data.longName ||
-              result.data.shortName,
-            ticker: result.data.symbol,
-            price: result.data.regularMarketPrice
-              ? `$${result.data.regularMarketPrice.toFixed(2)}`
-              : "N/A",
-            dailyChange: result.data.regularMarketChangePercent
-              ? `${result.data.regularMarketChangePercent.toFixed(2)}%`
-              : "N/A",
+            name: stockData.displayName || stockData.symbol || "Unknown",
+            ticker: stockData.symbol,
+            price:
+              stockData.regularMarketPrice &&
+              !isNaN(stockData.regularMarketPrice)
+                ? `$${parseFloat(stockData.regularMarketPrice).toFixed(2)}`
+                : "N/A",
+            dailyChange:
+              stockData.regularMarketChangePercent &&
+              !isNaN(stockData.regularMarketChangePercent)
+                ? `${parseFloat(stockData.regularMarketChangePercent).toFixed(
+                    2
+                  )}%`
+                : "N/A",
+            priceValue: parseFloat(stockData.regularMarketPrice) || 0,
+            dailyChangeValue:
+              parseFloat(stockData.regularMarketChangePercent) || 0,
           },
         ]);
         setSearchMessage("");
@@ -229,7 +236,13 @@ const SandboxPortfolio = ({
             >
               <span>
                 {company.name} ({company.ticker}) - {company.price}{" "}
-                {company.dailyChange}
+                <span
+                  style={{
+                    color: company.dailyChangeValue >= 0 ? "green" : "red",
+                  }}
+                >
+                  {company.dailyChange}
+                </span>
               </span>
               <button
                 onClick={() => addCompanyToPortfolio(company)}
@@ -242,23 +255,6 @@ const SandboxPortfolio = ({
         </div>
       )}
 
-      <div className={styles.portfolioSummary}>
-        <div className={styles.summaryItem}></div>
-        <div className={styles.summaryItem}></div>
-      </div>
-
-      {/* <div className={styles.simulationSection}>
-        <button
-          className={styles.simulationButton}
-          onClick={handleRunSimulation}
-          disabled={isLoadingSimulation}
-        >
-          {isLoadingSimulation
-            ? "Running Simulation..."
-            : "Run Portfolio Simulation"}
-        </button>
-      </div> */}
-
       <div className={styles.companyList}>
         <div className={styles.companyListHeader}>
           <span className={styles.headerItem}>Company</span>
@@ -269,7 +265,7 @@ const SandboxPortfolio = ({
           <span className={styles.headerItem}>Action</span>
         </div>
         {portfolioCompanies.length > 0 ? (
-          portfolioCompanies.map((company, index) => (
+          portfolioCompanies.map((company) => (
             <div
               key={company.id}
               className={`${styles.companyListItem} ${
@@ -282,11 +278,18 @@ const SandboxPortfolio = ({
               <span className={styles.listItem}>{company.name}</span>
               <span className={styles.listItem}>{company.ticker}</span>
               <span className={styles.listItem}>
-                {company.price ? `$${company.price.toFixed(2)}` : "N/A"}
+                {company.price
+                  ? `$${parseFloat(company.price).toFixed(2)}`
+                  : "N/A"}
               </span>
-              <span className={styles.listItem}>
+              <span
+                className={styles.listItem}
+                style={{
+                  color: company.dailyChange >= 0 ? "green" : "red",
+                }}
+              >
                 {company.dailyChange
-                  ? `${company.dailyChange.toFixed(2)}%`
+                  ? `${parseFloat(company.dailyChange).toFixed(2)}%`
                   : "N/A"}
               </span>
               <span className={styles.listItem}>

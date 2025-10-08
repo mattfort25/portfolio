@@ -2,7 +2,7 @@
 const { getStockDetailsFromAPI } = require("../utils/stockApi");
 
 const getStockInfo = async (req, res) => {
-  const userQuery = req.params.query ? req.params.query.toLowerCase() : "";
+  const userQuery = req.params.query ? req.params.query : "";
 
   if (!userQuery) {
     return res

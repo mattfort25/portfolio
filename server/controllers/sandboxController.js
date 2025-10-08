@@ -17,10 +17,18 @@ exports.getSandboxPortfolio = async (req, res) => {
       ],
     });
 
+    if (sandboxAssets.length === 0) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        message: "No assets in sandbox portfolio.",
+      });
+    }
+
     const portfolioWithPrices = await Promise.all(
       sandboxAssets.map(async (item) => {
         try {
-          // Fetch current price and daily change from a stock API
+          // Fetch current price and daily change from the stock API
           const stockData = await getStockDetailsFromAPI(item.Asset.ticker);
 
           return {
@@ -28,21 +36,22 @@ exports.getSandboxPortfolio = async (req, res) => {
             name: item.Asset.name,
             ticker: item.Asset.ticker,
             shares: item.quantity,
-            price: stockData.regularMarketPrice,
-            dailyChange: stockData.regularMarketChangePercent,
+            price: stockData.regularMarketPrice || 0,
+            dailyChange: stockData.regularMarketChangePercent || 0,
           };
         } catch (apiError) {
           console.error(
             `Error fetching data for ${item.Asset.ticker}:`,
             apiError.message
           );
+          // Return asset with 0 values if API call fails
           return {
             id: item.sandbox_asset_id,
             name: item.Asset.name,
             ticker: item.Asset.ticker,
             shares: item.quantity,
-            price: null,
-            dailyChange: null,
+            price: 0,
+            dailyChange: 0,
           };
         }
       })
@@ -68,9 +77,30 @@ exports.addSandboxAsset = async (req, res) => {
     const { ticker, name, quantity } = req.body;
     const userId = req.user.id;
 
+    if (!ticker || !name || !quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Ticker, name, and quantity are required.",
+      });
+    }
+
+    const parsedQuantity = parseInt(quantity, 10);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Quantity must be a positive number.",
+      });
+    }
+
+    // Try to find or create the asset
     const [asset, created] = await Asset.findOrCreate({
-      where: { ticker },
-      defaults: { name, ticker, asset_type: "stock", currency: "USD" },
+      where: { ticker: ticker.toUpperCase() },
+      defaults: {
+        name,
+        ticker: ticker.toUpperCase(),
+        asset_type: "stock",
+        currency: "USD",
+      },
     });
 
     // Check for existing asset in the user sandbox portfolio
@@ -79,29 +109,32 @@ exports.addSandboxAsset = async (req, res) => {
     });
 
     if (existingEntry) {
-      existingEntry.quantity += quantity;
+      existingEntry.quantity += parsedQuantity;
       await existingEntry.save();
       return res.status(200).json({
         success: true,
         message: "Asset quantity updated in sandbox.",
+        data: existingEntry,
       });
     } else {
-      // If it does not exist, create a new
-      await SandboxAsset.create({
+      // If it does not exist, create a new entry
+      const newSandboxAsset = await SandboxAsset.create({
         user_id: userId,
         asset_id: asset.asset_id,
-        quantity,
+        quantity: parsedQuantity,
       });
+
       return res.status(201).json({
         success: true,
-        message: "Asset added to sandbox.",
+        message: "Asset added to sandbox successfully.",
+        data: newSandboxAsset,
       });
     }
   } catch (error) {
     console.error("Error adding asset to sandbox:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to add asset to sandbox.",
+      message: error.message || "Failed to add asset to sandbox.",
     });
   }
 };
@@ -111,6 +144,13 @@ exports.removeSandboxAsset = async (req, res) => {
   try {
     const { sandboxAssetId } = req.params;
     const userId = req.user.id;
+
+    if (!sandboxAssetId) {
+      return res.status(400).json({
+        success: false,
+        message: "Sandbox asset ID is required.",
+      });
+    }
 
     const result = await SandboxAsset.destroy({
       where: {
@@ -134,7 +174,7 @@ exports.removeSandboxAsset = async (req, res) => {
     console.error("Error removing asset from sandbox:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to remove asset from sandbox.",
+      message: error.message || "Failed to remove asset from sandbox.",
     });
   }
 };
@@ -146,10 +186,18 @@ exports.updateSandboxAssetShares = async (req, res) => {
     const { quantity } = req.body;
     const userId = req.user.id;
 
+    if (!sandboxAssetId) {
+      return res.status(400).json({
+        success: false,
+        message: "Sandbox asset ID is required.",
+      });
+    }
+
     if (!quantity || isNaN(quantity) || parseInt(quantity, 10) <= 0) {
       return res.status(400).json({
         success: false,
-        message: "Invalid quantity provided.",
+        message:
+          "Invalid quantity provided. Quantity must be a positive number.",
       });
     }
 
@@ -163,22 +211,23 @@ exports.updateSandboxAssetShares = async (req, res) => {
     if (!asset) {
       return res.status(404).json({
         success: false,
-        message: "Asset not found or not authorized.",
+        message: "Asset not found in sandbox or not authorized.",
       });
     }
 
-    asset.quantity = quantity;
+    asset.quantity = parseInt(quantity, 10);
     await asset.save();
 
     return res.status(200).json({
       success: true,
-      message: "Shares updated successfully.",
+      message: "Asset shares updated successfully.",
+      data: asset,
     });
   } catch (error) {
     console.error("Error updating shares:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update shares.",
+      message: error.message || "Failed to update shares.",
     });
   }
 };

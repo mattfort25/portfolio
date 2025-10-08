@@ -83,7 +83,7 @@ const Header = () => {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.brand}>
-          Metametanym
+          Metanym
         </Link>
 
         <button
@@ -109,21 +109,21 @@ const Header = () => {
                 Dashboard
               </Link>
               <Link
-                href="/assets"
+                href="/dashboard"
                 className={`${styles.navLink} ${
-                  router.pathname === "/assets" ? styles.activeLink : ""
+                  router.pathname === "/dashboard" ? styles.activeLink : ""
                 }`}
               >
                 My Assets
               </Link>
-              <Link
-                href="/market"
+              {/* <Link
+                href="/dashboard"
                 className={`${styles.navLink} ${
-                  router.pathname === "/market" ? styles.activeLink : ""
+                  router.pathname === "/dashboard" ? styles.activeLink : ""
                 }`}
               >
                 Market Data
-              </Link>
+              </Link> */}
               <Link
                 href="/news"
                 className={`${styles.navLink} ${

@@ -14,6 +14,7 @@ const sandboxRoutes = require("./routes/sandboxRoutes");
 const stockHistoryRoutes = require("./routes/stockHistoryRoutes");
 const stockNewsRoutes = require("./routes/stockNewsRoutes");
 const simulationRoutes = require("./routes/simulationRoutes");
+const newsRoutes = require("./routes/newsRoutes");
 
 // Importing models
 const User = require("./models/User");
@@ -73,6 +74,7 @@ app.use("/api/sandbox", sandboxRoutes);
 app.use("/api/stocks", stockHistoryRoutes);
 app.use("/api/stocks", stockNewsRoutes);
 app.use("/api/simulate", simulationRoutes);
+app.use("/api/news", newsRoutes);
 
 const PORT = process.env.PORT || 8080;
 

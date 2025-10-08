@@ -1,3 +1,4 @@
+// porfolio/src/components/Dashboard/PortfolioPerformance.js
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import styles from "../../styles/Dashboard/PortfolioPerformance.module.css";

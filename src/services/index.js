@@ -221,16 +221,30 @@ export async function getUserProfile() {
 
 export async function getStockDetails(query) {
   try {
-    const response = await my_fetch(`${API_BASE_URL}/stocks/${query}`, {
+    const response = await my_fetch(`${API_BASE_URL}/stocks/info/${query}`, {
       method: "GET",
     });
 
     const data = await response.json();
 
     if (response.ok) {
+      // Format the response to ensure all required fields are present
+      const formattedData = {
+        symbol: data.data?.symbol || query.toUpperCase(),
+        displayName:
+          data.data?.displayName || data.data?.symbol || query.toUpperCase(),
+        longName:
+          data.data?.longName || data.data?.symbol || query.toUpperCase(),
+        shortName:
+          data.data?.shortName || data.data?.symbol || query.toUpperCase(),
+        regularMarketPrice: parseFloat(data.data?.regularMarketPrice) || 0,
+        regularMarketChangePercent:
+          parseFloat(data.data?.regularMarketChangePercent) || 0,
+      };
+
       return {
         success: true,
-        data: data.data, // Get data field from  backend
+        data: formattedData,
         message: data.message,
       };
     } else {
@@ -247,6 +261,7 @@ export async function getStockDetails(query) {
     };
   }
 }
+
 export async function getSandboxPortfolio() {
   try {
     const response = await my_fetch(`${API_BASE_URL}/sandbox`, {
@@ -340,6 +355,7 @@ export async function updateSandboxAssetShares(sandboxAssetId, quantity) {
     };
   }
 }
+
 export async function getStockHistory(ticker, interval, range) {
   try {
     const url = `${API_BASE_URL}/stocks/${ticker}/history?interval=${interval}&range=${range}`;
@@ -403,5 +419,32 @@ export async function runSimulation(portfolioData) {
   } catch (error) {
     console.error("Error running simulation:", error);
     return { success: false, message: "Network error occurred." };
+  }
+}
+
+export async function getGlobalNews() {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/news/global`, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return { success: true, data: data.data, message: data.message };
+    } else {
+      return {
+        success: false,
+        data: null,
+        message: data.message || "Failed to fetch global news from the server.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching global news:", error);
+    return {
+      success: false,
+      data: null,
+      message: error.message || "Network error occurred while fetching news.",
+    };
   }
 }
