@@ -1,4 +1,3 @@
-// src/components/Header.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -18,6 +17,10 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
 
+  // Detect if device is mobile
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
+  // Handle scroll and outside click
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -59,12 +62,27 @@ const Header = () => {
     };
   }, [token, logout]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [mobileMenuOpen]);
+
   const handleLogout = () => {
     logout();
     router.push("/auth/login");
   };
 
+  const handleNavLinkClick = () => {
+    setMobileMenuOpen(false);
+    setActiveDropdown(null);
+  };
+
   const handleMouseEnter = (dropdown) => {
+    if (isMobile) return;
     if (dropdownTimeout) {
       clearTimeout(dropdownTimeout);
       setDropdownTimeout(null);
@@ -73,16 +91,23 @@ const Header = () => {
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return;
     const timeout = setTimeout(() => {
       setActiveDropdown(null);
     }, 150);
     setDropdownTimeout(timeout);
   };
 
+  const handleDropdownToggle = (dropdown) => {
+    if (isMobile) {
+      setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+    }
+  };
+
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
-        <Link href="/" className={styles.brand}>
+        <Link href="/" className={styles.brand} onClick={handleNavLinkClick}>
           Metanym
         </Link>
 
@@ -102,6 +127,7 @@ const Header = () => {
             <>
               <Link
                 href="/dashboard"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/dashboard" ? styles.activeLink : ""
                 }`}
@@ -110,22 +136,17 @@ const Header = () => {
               </Link>
               <Link
                 href="/dashboard"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/dashboard" ? styles.activeLink : ""
                 }`}
               >
                 My Assets
               </Link>
-              {/* <Link
-                href="/dashboard"
-                className={`${styles.navLink} ${
-                  router.pathname === "/dashboard" ? styles.activeLink : ""
-                }`}
-              >
-                Market Data
-              </Link> */}
+
               <Link
                 href="/news"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/news" ? styles.activeLink : ""
                 }`}
@@ -134,6 +155,7 @@ const Header = () => {
               </Link>
               <Link
                 href="/pricing"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/pricing" ? styles.activeLink : ""
                 }`}
@@ -143,10 +165,12 @@ const Header = () => {
             </>
           ) : (
             <>
+              {/* Solutions Dropdown */}
               <div
                 className={styles.dropdown}
                 onMouseEnter={() => handleMouseEnter("solutions")}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => handleDropdownToggle("solutions")}
               >
                 <a href="#" className={styles.navLink}>
                   Solutions
@@ -188,10 +212,12 @@ const Header = () => {
                 </div>
               </div>
 
+              {/* Products Dropdown */}
               <div
                 className={styles.dropdown}
                 onMouseEnter={() => handleMouseEnter("products")}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => handleDropdownToggle("products")}
               >
                 <a href="#" className={styles.navLink}>
                   Products
@@ -234,10 +260,12 @@ const Header = () => {
                 </div>
               </div>
 
+              {/* Resources Dropdown */}
               <div
                 className={styles.dropdown}
                 onMouseEnter={() => handleMouseEnter("resources")}
                 onMouseLeave={handleMouseLeave}
+                onClick={() => handleDropdownToggle("resources")}
               >
                 <a href="#" className={styles.navLink}>
                   Resources
@@ -257,6 +285,7 @@ const Header = () => {
 
               <Link
                 href="#"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/clients" ? styles.activeLink : ""
                 }`}
@@ -265,6 +294,7 @@ const Header = () => {
               </Link>
               <Link
                 href="/about"
+                onClick={handleNavLinkClick}
                 className={`${styles.navLink} ${
                   router.pathname === "/about" ? styles.activeLink : ""
                 }`}
@@ -285,10 +315,18 @@ const Header = () => {
                 </span>
                 {showProfileDropdown && (
                   <div className={styles.dropdownMenu}>
-                    <Link href="/dashboard" className={styles.dropdownItem}>
+                    <Link
+                      href="/dashboard"
+                      className={styles.dropdownItem}
+                      onClick={handleNavLinkClick}
+                    >
                       Dashboard
                     </Link>
-                    <Link href="/profile" className={styles.dropdownItem}>
+                    <Link
+                      href="/profile"
+                      className={styles.dropdownItem}
+                      onClick={handleNavLinkClick}
+                    >
                       Profile Settings
                     </Link>
                     <div className={styles.divider}></div>
@@ -303,10 +341,18 @@ const Header = () => {
               </div>
             ) : (
               <>
-                <Link href="/auth/login" className={styles.loginBtn}>
+                <Link
+                  href="/auth/login"
+                  className={styles.loginBtn}
+                  onClick={handleNavLinkClick}
+                >
                   Login
                 </Link>
-                <Link href="/demo" className={styles.registerBtn}>
+                <Link
+                  href="/demo"
+                  className={styles.registerBtn}
+                  onClick={handleNavLinkClick}
+                >
                   Request a Demo
                 </Link>
               </>

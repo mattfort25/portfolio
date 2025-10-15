@@ -1,5 +1,5 @@
 .portfolioPerformanceCard {
-  flex: 2;
+  /* flex: 1; */
   background-color: #ffffff;
   border-radius: 12px;
   padding: 1.5rem;
@@ -19,7 +19,7 @@
 .chartContainer {
   flex-grow: 1;
   width: 100%;
-  height: 200px;
+  height: 12rem;
   margin-bottom: 1rem;
 }
 

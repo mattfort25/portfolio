@@ -15,14 +15,9 @@ const stockHistoryRoutes = require("./routes/stockHistoryRoutes");
 const stockNewsRoutes = require("./routes/stockNewsRoutes");
 const simulationRoutes = require("./routes/simulationRoutes");
 const newsRoutes = require("./routes/newsRoutes");
+const reportingRoutes = require("./routes/reportingRoutes");
+const earningsRoutes = require("./routes/earningsRoutes");
 
-// Importing models
-const User = require("./models/User");
-const Asset = require("./models/Asset");
-const UserAsset = require("./models/UserAsset");
-const Subscription = require("./models/Subscription");
-const HistoricalPrice = require("./models/HistoricalPrice");
-const News = require("./models/News");
 const app = express();
 
 // Importing association
@@ -75,6 +70,8 @@ app.use("/api/stocks", stockHistoryRoutes);
 app.use("/api/stocks", stockNewsRoutes);
 app.use("/api/simulate", simulationRoutes);
 app.use("/api/news", newsRoutes);
+app.use("/api/reporting", reportingRoutes);
+app.use("/api/earnings", earningsRoutes);
 
 const PORT = process.env.PORT || 8080;
 

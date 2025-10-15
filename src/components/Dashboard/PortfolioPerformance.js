@@ -277,7 +277,7 @@ const PortfolioPerformance = ({
         <h3 className={styles.cardHeader}>Simulation Results</h3>
         {simulationResults ? (
           <div className={styles.metrics}>
-            <p>
+            {/* <p>
               **VaR 95%**:{" "}
               <span>
                 {(simulationResults.metrics.VaR_95 * 100).toFixed(2)}%
@@ -294,7 +294,7 @@ const PortfolioPerformance = ({
               <span>
                 {(simulationResults.metrics.mean_return * 100).toFixed(2)}%
               </span>
-            </p>
+            </p> */}
           </div>
         ) : (
           <p className={styles.noResults}>

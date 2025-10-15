@@ -1,3 +1,4 @@
+// porfolio/src/components/dashboard/SandboxPortfolio.js
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/SandboxPortfolio.module.css";
 import {
@@ -208,7 +209,7 @@ const SandboxPortfolio = ({
 
   return (
     <div className={styles.sandboxPortfolioCard}>
-      <h2 className={styles.cardHeader}>Sandbox Portfolio</h2>
+      <h2 className={styles.cardHeader}>Portfolio</h2>
       <div className={styles.searchBar}>
         <i className="fa-solid fa-search"></i>
         <input

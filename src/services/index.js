@@ -48,6 +48,7 @@ export function removeTokens() {
 
 // --- API fetch wrapper with token refresh logic ---
 
+// Function to refresh token and retry the original request
 const fetchWithTokenRefresh = async (url, options) => {
   try {
     const refreshToken = getRefreshToken();
@@ -91,6 +92,7 @@ const fetchWithTokenRefresh = async (url, options) => {
   }
 };
 
+// General fetch wrapper that includes auth token and handles 401 errors
 export async function my_fetch(url, args = {}) {
   const accessToken = getAccessToken();
   const headers = {
@@ -132,6 +134,7 @@ export async function my_fetch(url, args = {}) {
 
 // --- User Authentication Services --
 
+// User signup
 export async function signupUser(userData) {
   try {
     const response = await my_fetch(`${API_BASE_URL}/auth/signup`, {
@@ -156,6 +159,7 @@ export async function signupUser(userData) {
   }
 }
 
+// User login
 export async function loginUser(email, password) {
   try {
     const response = await my_fetch(`${API_BASE_URL}/auth/login`, {
@@ -190,6 +194,7 @@ export async function loginUser(email, password) {
   }
 }
 
+// Fetch user profile
 export async function getUserProfile() {
   try {
     const response = await my_fetch(`${API_BASE_URL}/user/profile`, {
@@ -219,6 +224,7 @@ export async function getUserProfile() {
   }
 }
 
+// --- Stock and Portfolio Services ---
 export async function getStockDetails(query) {
   try {
     const response = await my_fetch(`${API_BASE_URL}/stocks/info/${query}`, {
@@ -262,6 +268,7 @@ export async function getStockDetails(query) {
   }
 }
 
+// Fetch sandbox portfolio
 export async function getSandboxPortfolio() {
   try {
     const response = await my_fetch(`${API_BASE_URL}/sandbox`, {
@@ -282,6 +289,7 @@ export async function getSandboxPortfolio() {
   }
 }
 
+// Add sandbox asset
 export async function addSandboxAsset(ticker, name, quantity) {
   try {
     const response = await my_fetch(`${API_BASE_URL}/sandbox/add`, {
@@ -303,6 +311,7 @@ export async function addSandboxAsset(ticker, name, quantity) {
   }
 }
 
+// Remove sandbox asset
 export async function removeSandboxAsset(sandboxAssetId) {
   try {
     const response = await my_fetch(
@@ -327,6 +336,7 @@ export async function removeSandboxAsset(sandboxAssetId) {
   }
 }
 
+// Update sandbox asset shares
 export async function updateSandboxAssetShares(sandboxAssetId, quantity) {
   try {
     const response = await my_fetch(
@@ -356,6 +366,7 @@ export async function updateSandboxAssetShares(sandboxAssetId, quantity) {
   }
 }
 
+// Fetch stock history by ticker, interval, and range
 export async function getStockHistory(ticker, interval, range) {
   try {
     const url = `${API_BASE_URL}/stocks/${ticker}/history?interval=${interval}&range=${range}`;
@@ -381,6 +392,7 @@ export async function getStockHistory(ticker, interval, range) {
   }
 }
 
+// Fetch stock news by ticker
 export const getStockNews = async (ticker) => {
   try {
     const response = await my_fetch(`${API_BASE_URL}/stocks/${ticker}/news`);
@@ -400,6 +412,7 @@ export const getStockNews = async (ticker) => {
   }
 };
 
+// Run portfolio simulation
 export async function runSimulation(portfolioData) {
   try {
     const response = await my_fetch(`${API_BASE_URL}/simulate/simple`, {
@@ -422,6 +435,7 @@ export async function runSimulation(portfolioData) {
   }
 }
 
+// Fetch global financial news
 export async function getGlobalNews() {
   try {
     const response = await my_fetch(`${API_BASE_URL}/news/global`, {
@@ -445,6 +459,125 @@ export async function getGlobalNews() {
       success: false,
       data: null,
       message: error.message || "Network error occurred while fetching news.",
+    };
+  }
+}
+
+// Get reporting data
+export async function getReportingData() {
+  try {
+    const response = await my_fetch(`${API_BASE_URL}/reporting/data`, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return {
+        success: true,
+        data: data.data,
+        message: data.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to fetch reporting data.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching reporting data:", error);
+    return {
+      success: false,
+      message: error.message || "Network error occurred.",
+    };
+  }
+}
+
+// Download report in specified format
+export async function downloadReport(format, data) {
+  try {
+    const endpoint = `/reporting/download/${format}`;
+    const response = await my_fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "POST",
+      body: JSON.stringify({ data }),
+    });
+
+    if (response.ok) {
+      let mimeType;
+      switch (format) {
+        case "csv":
+          mimeType = "text/csv";
+          break;
+        case "xlsx":
+          mimeType =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+          break;
+        case "pdf":
+          mimeType = "application/pdf";
+          break;
+        default:
+          mimeType = "application/octet-stream";
+      }
+
+      // Get the data as blob/text depending on format
+      let responseData;
+      if (format === "csv") {
+        responseData = await response.text();
+      } else {
+        responseData = await response.blob();
+      }
+
+      return {
+        success: true,
+        data: responseData,
+        mimeType: mimeType,
+      };
+    } else {
+      const errorData = await response.json();
+      return {
+        success: false,
+        message: errorData.message || `Failed to download ${format} report.`,
+      };
+    }
+  } catch (error) {
+    console.error(`Error downloading ${format} report:`, error);
+    return {
+      success: false,
+      message: error.message || "Network error occurred during download.",
+    };
+  }
+}
+
+// Fetch earnings calendar for portfolio
+export async function getPortfolioEarnings(tickers) {
+  try {
+    const tickerString = Array.isArray(tickers) ? tickers.join(",") : tickers;
+    const response = await my_fetch(
+      `${API_BASE_URL}/earnings/portfolio?tickers=${tickerString}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return {
+        success: true,
+        data: data.data,
+        message: data.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to fetch earnings calendar.",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching earnings calendar:", error);
+    return {
+      success: false,
+      message: error.message || "Network error occurred.",
     };
   }
 }
