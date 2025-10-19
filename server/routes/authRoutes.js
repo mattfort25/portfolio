@@ -9,7 +9,7 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // Define API routes for authentication
-router.post("/signup", signup);
+router.post("/demo-signup", signup);
 router.post("/login", login);
 router.post("/token/refresh", refreshToken);
 

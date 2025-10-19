@@ -135,9 +135,9 @@ export async function my_fetch(url, args = {}) {
 // --- User Authentication Services --
 
 // User signup
-export async function signupUser(userData) {
+export async function requestDemoAndCreateUser(userData) {
   try {
-    const response = await my_fetch(`${API_BASE_URL}/auth/signup`, {
+    const response = await my_fetch(`${API_BASE_URL}/auth/demo-signup`, {
       method: "POST",
       body: JSON.stringify(userData),
     });
@@ -148,17 +148,21 @@ export async function signupUser(userData) {
       setTokens(data); // Store access and refresh tokens from backend
       return { success: true, ...data };
     } else {
-      return { success: false, message: data.message || "Failed to sign up." };
+      return {
+        success: false,
+        message: data.message || "Failed to process demo request.",
+      };
     }
   } catch (error) {
-    console.error("Error during signup service call:", error);
+    console.error("Error during demo request service call:", error);
     return {
       success: false,
-      message: error.message || "Network error occurred during signup.",
+      message:
+        error.message ||
+        "Network error occurred during demo request/account creation.",
     };
   }
 }
-
 // User login
 export async function loginUser(email, password) {
   try {

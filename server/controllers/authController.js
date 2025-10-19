@@ -7,25 +7,34 @@ const {
   generateRefreshToken,
 } = require("../utils/jwtUtils");
 
-// User sing up
-const signup = async (req, res) => {
+// User sign up
+const demoSignup = async (req, res) => {
   try {
-    const { name, email, password, subscriptionPlan } = req.body;
+    // 🚨 Extract all fields along with name, email, and password
+    const {
+      name,
+      email,
+      password, // temporary password from the frontend
+      organization,
+      role,
+      phone,
+      primaryInterest,
+      regions,
+      demoFormat,
+      message,
+    } = req.body;
 
     // Validate required fields
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, and password are required.",
+        message: "Full Name, Work Email, and Password are required.",
       });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be at least 8 characters long.",
-      });
-    }
+    // if (password.length < 8) {
+    //   return res.status(400).json({ ... });
+    // }
 
     // Check if user with this email already exists
     const existingUser = await User.findOne({ where: { email } });
@@ -40,12 +49,20 @@ const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
-    // Create the new user in the database
+    // Create the new user with all fields
     const newUser = await User.create({
       name,
       email,
       password_hash,
-      subscription_plan: subscriptionPlan,
+      subscription_plan: "silver", // Default to silver for demo
+      is_demo_user: true, // Flag this user as a demo user
+      organization,
+      role,
+      phone,
+      primary_interest: primaryInterest,
+      regions_of_interest: regions,
+      demo_format: demoFormat,
+      message,
     });
 
     // Generate JWTs (access and refresh Tokens)
@@ -54,7 +71,8 @@ const signup = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Account created successfully!",
+      message:
+        "Demo request received and temporary account created! Check your account with your email and password created.",
       accessToken,
       refreshToken,
       user: {
@@ -62,19 +80,19 @@ const signup = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         subscription_plan: newUser.subscription_plan,
+        is_demo_user: newUser.is_demo_user,
       },
     });
   } catch (error) {
-    console.error("Error during signup:", error);
+    console.error("Error during demoSignup:", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error during registration. Please try again.",
+      message: "Internal server error during demo request. Please try again.",
     });
   }
 };
 
 // User login
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -158,7 +176,7 @@ const refreshToken = async (req, res) => {
 };
 
 module.exports = {
-  signup,
+  signup: demoSignup,
   login,
   refreshToken,
 };

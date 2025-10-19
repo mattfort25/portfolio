@@ -1,6 +1,7 @@
-.section {
-  padding: 5rem 1rem;
-  background: #f8f9fa;
+/* Lead Section */
+.leadSection {
+  background-color: #111;
+  padding: 5rem 2rem;
   text-align: center;
 }
 
@@ -9,51 +10,106 @@
   margin: 0 auto;
 }
 
-.container h2 {
-  font-size: 2.5rem;
+.leadSection h2 {
   font-weight: 700;
+  color: #00bcd4;
   margin-bottom: 1.5rem;
-  color: #333;
+  font-size: 2.5rem;
 }
 
 .lead {
-  font-size: 1.2rem;
-  color: #666;
+  color: #ccc;
+  font-size: 1.15rem;
   line-height: 1.6;
   margin-bottom: 2.5rem;
 }
 
-.ctaButton {
-  display: inline-block;
-  background: linear-gradient(135deg, #0f3339 0%, #16272c 100%);
-  color: white;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+.emailForm {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
-/* .ctaButton:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-  color: white;
-  text-decoration: none;
-} */
+.emailInput {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  border-radius: 50px;
+  border: 1px solid #333;
+  padding: 0.75rem 1.25rem;
+  background-color: #1a1a1a;
+  color: #f8f9fa;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
 
+.emailInput:focus {
+  outline: none;
+  border-color: #00bcd4;
+  background-color: #222;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+}
+
+.emailInput::placeholder {
+  color: #666;
+}
+
+.submitBtn {
+  border-radius: 50px;
+  background-color: #00bcd4;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: #0099aa;
+}
+
+/* Feedback */
+.feedback {
+  font-size: 0.95rem;
+  margin-top: 1.5rem;
+  min-height: 1.5rem;
+}
+
+.feedback.success {
+  color: #00bcd4;
+}
+
+.feedback.error {
+  color: #ff4d4d;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .container h2 {
+  .leadSection {
+    padding: 3rem 1rem;
+  }
+
+  .leadSection h2 {
     font-size: 2rem;
   }
 
   .lead {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
-  .section {
-    padding: 3rem 1rem;
+  .emailForm {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .emailInput,
+  .submitBtn {
+    width: 100%;
+    max-width: 100%;
   }
 }

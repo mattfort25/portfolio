@@ -1,9 +1,10 @@
 .appShell {
   display: flex;
   gap: 24px;
-  padding: 20px 24px;
+  padding: 6rem 24px 20px 24px;
   max-width: 1600px;
   margin: 0 auto;
+  min-height: 100vh;
 }
 
 /* Sidebar Navigation */
@@ -13,8 +14,9 @@
 }
 
 .navCard {
-  background-color: var(--card);
+  background-color: #1a1a1a;
   border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-sm);
   padding: 20px;
   margin-bottom: 20px;
@@ -24,7 +26,7 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: var(--neutral-900);
+  color: #f8f9fa;
 }
 
 .navPills {
@@ -36,20 +38,28 @@
   padding: 8px 12px;
   margin-bottom: 4px;
   border-radius: 6px;
-  color: var(--neutral-700);
+  color: #ccc;
   text-decoration: none;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .navLink:hover {
-  background-color: #f1f3f5;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #00bcd4;
+  transform: translateX(2px);
 }
 
 .navLinkActive {
-  composes: navLink;
-  background-color: var(--brand-silver);
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  background-color: rgba(0, 188, 212, 0.15);
   font-weight: 600;
-  color: var(--brand-navy);
+  color: #00bcd4;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 /* Main Content Area */
@@ -60,7 +70,7 @@
 .dashboardTitle {
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--neutral-900);
+  color: #f8f9fa;
   margin-bottom: 20px;
 }
 
@@ -75,11 +85,8 @@
   flex: 1;
   height: 56px;
   min-width: 150px;
-  background: linear-gradient(
-    90deg,
-    rgba(11, 35, 64, 0.02),
-    rgba(11, 35, 64, 0.01)
-  );
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   padding: 0 14px;
   display: flex;
@@ -90,14 +97,14 @@
 .kpiTitle {
   font-size: 12px;
   font-weight: 400;
-  color: var(--neutral-700);
+  color: #999;
   margin: 0;
 }
 
 .kpiValue {
   font-weight: 700;
   font-size: 18px;
-  color: var(--brand-navy);
+  color: #00bcd4;
   margin: 0;
 }
 
@@ -121,7 +128,8 @@
 
 /* New Component Styles */
 .card {
-  background-color: var(--card);
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   padding: 20px;
@@ -156,7 +164,7 @@
 .newsItem,
 .eventItem {
   padding: 10px;
-  border-bottom: 1px solid #f1f3f5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .newsItem:last-child,
@@ -166,20 +174,23 @@
 
 .newsTitle {
   font-weight: 600;
+  color: #f8f9fa;
 }
 
 .eventTitle {
   font-weight: 600;
+  color: #f8f9fa;
 }
 
 .mutedSmall {
   font-size: 12px;
-  color: var(--neutral-500);
+  color: #999;
 }
 
 @media (max-width: 1024px) {
   .appShell {
     flex-direction: column;
+    padding: 5rem 10px 20px 10px;
   }
   .contentGrid {
     grid-template-columns: 1fr;
@@ -188,7 +199,7 @@
 
 @media (max-width: 768px) {
   .appShell {
-    padding: 10px;
+    padding: 5rem 10px 10px 10px;
     gap: 10px;
   }
   .sidebar {
@@ -209,33 +220,19 @@
 
 .comingSoon i {
   font-size: 4rem;
-  color: #9ca3af;
+  color: #00bcd4;
   margin-bottom: 1.5rem;
 }
 
 .comingSoon h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #f8f9fa;
   margin: 0 0 0.5rem 0;
 }
 
 .comingSoon p {
   font-size: 1.1rem;
-  color: #6b7280;
+  color: #ccc;
   margin: 0;
-}
-
-.navLink {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.navLink:hover {
-  background-color: #f3f4f6;
-  transform: translateX(2px);
-}
-
-.navLinkActive {
-  cursor: pointer;
 }

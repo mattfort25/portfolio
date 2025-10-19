@@ -1,3 +1,4 @@
+// porfolio/server/models/User.js (Modified)
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
 const bcrypt = require("bcryptjs");
@@ -31,6 +32,39 @@ const User = sequelize.define(
     subscription_expiry: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    organization: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    primary_interest: {
+      type: DataTypes.STRING, // Storing the selected interest as a string
+      allowNull: true,
+    },
+    regions_of_interest: {
+      type: DataTypes.ARRAY(DataTypes.STRING), // Storing multiple regions as an array of strings
+      allowNull: true,
+    },
+
+    demo_format: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    message: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    is_demo_user: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true, // Flag to indicate a user created via the demo flow
     },
   },
   {

@@ -2,8 +2,8 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Hero from "../components/Hero";
-import Benefits from "../components/Benefits";
-import Features from "../components/Features";
+// import Benefits from "../components/Benefits";
+// import Features from "../components/Features";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 
@@ -29,8 +29,8 @@ export default function Home() {
 
       <main>
         <Hero />
-        <Benefits />
-        <Features />
+        {/* <Benefits />
+        <Features /> */}
         <CTA />
       </main>
 
