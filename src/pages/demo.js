@@ -122,7 +122,7 @@ export default function Demo() {
     return (
       <div className={styles.container}>
         <Head>
-          <title>Demo Request Submitted – Metanym Risk</title>
+          <title>Demo Request Submitted , Metanym Risk</title>
           <meta
             name="description"
             content="Thank you for requesting a Metanym demo."
@@ -134,7 +134,7 @@ export default function Demo() {
             <div className={styles.successIcon}>✓</div>
             <h1 className={styles.successTitle}>Request Received</h1>
             <p className={styles.successMessage}>
-              Thank you for your interest. We've created your account. Please
+              Thank you for your interest. We have created your account. Please
               check your account by logging in with your email and the password
               you provided.
             </p>
@@ -150,7 +150,7 @@ export default function Demo() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Request a Demo – Metanym Risk</title>
+        <title>Request a Demo , Metanym Risk</title>
         <meta
           name="description"
           content="Experience how Metanym Risk transforms complex global events into clear, actionable intelligence."
