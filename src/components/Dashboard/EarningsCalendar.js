@@ -1,5 +1,4 @@
-// src/components/Dashboard/EarningsCalendar.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "../../styles/EarningsCalendar.module.css";
 import { getPortfolioEarnings } from "../../services";
 
@@ -8,13 +7,11 @@ const EarningsCalendar = ({ portfolioCompanies }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchEarnings();
-  }, [portfolioCompanies]);
-
-  const fetchEarnings = async () => {
+  const fetchEarnings = useCallback(async () => {
     if (!portfolioCompanies || portfolioCompanies.length === 0) {
       setEarnings([]);
+      setIsLoading(true);
+      setError(null);
       return;
     }
 
@@ -42,7 +39,11 @@ const EarningsCalendar = ({ portfolioCompanies }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [portfolioCompanies]); // dependency for the callback
+
+  useEffect(() => {
+    fetchEarnings();
+  }, [fetchEarnings]);
 
   const formatDate = (dateString) => {
     if (!dateString) return { month: "TBD", day: "?", year: "" };
@@ -52,7 +53,6 @@ const EarningsCalendar = ({ portfolioCompanies }) => {
       const month = date.toLocaleDateString("en-US", { month: "short" });
       const day = date.getDate();
       const year = date.getFullYear();
-
       return { month, day, year };
     } catch (error) {
       return { month: "TBD", day: "?", year: "" };
@@ -186,4 +186,3 @@ const EarningsCalendar = ({ portfolioCompanies }) => {
 };
 
 export default EarningsCalendar;
-// porfolio/src/pages/dashboard.js
