@@ -189,9 +189,9 @@ export default function Demo() {
             {/* Sub-Header */}
             <div className={styles.subHeader}>
               <p className={styles.subHeaderText}>
-                Whether you're monitoring emerging risks, evaluating
+                Whether you are monitoring emerging risks, evaluating
                 investments, or preparing policy responses, Metanym Risk
-                delivers the insights you need—when you need them.
+                delivers the insights you need when you need them.
               </p>
             </div>
 
@@ -333,10 +333,10 @@ export default function Demo() {
                       >
                         <option value="">Select demo format</option>
                         <option value="Live walk-through">
-                          Live walk-through
+                          Live walk through
                         </option>
                         <option value="Pre-recorded overview">
-                          Pre-recorded overview
+                          Pre recorded overview
                         </option>
                         <option value="Custom use case">Custom use case</option>
                       </select>
