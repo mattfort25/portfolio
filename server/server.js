@@ -17,6 +17,7 @@ const simulationRoutes = require("./routes/simulationRoutes");
 const newsRoutes = require("./routes/newsRoutes");
 const reportingRoutes = require("./routes/reportingRoutes");
 const earningsRoutes = require("./routes/earningsRoutes");
+const subscriberRoutes = require("./routes/subscriberRoutes");
 
 const app = express();
 
@@ -72,6 +73,7 @@ app.use("/api/simulate", simulationRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/reporting", reportingRoutes);
 app.use("/api/earnings", earningsRoutes);
+app.use("/api", subscriberRoutes);
 
 const PORT = process.env.PORT || 8080;
 

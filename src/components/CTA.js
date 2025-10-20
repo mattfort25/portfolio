@@ -1,42 +1,43 @@
-// import Link from "next/link";
-// import styles from "../styles/CTA.module.css";
-
-// export default function CTA() {
-//   return (
-//     <section className={styles.section}>
-//       <div className={styles.container}>
-//         <h2>Take Control of Your Risk</h2>
-//         <p className={styles.lead}>
-//           Join forward-looking risk teams using Financial Profile to transform
-//           uncertainty into strategic advantage.
-//         </p>
-//         <Link href="/auth/signup" className={styles.ctaButton}>
-//           Register Now
-//         </Link>
-//       </div>
-//     </section>
-//   );
-// }
-
+// src/components/CTA.js
 import { useState } from "react";
 import styles from "../styles/CTA.module.css";
+import { subscribeEmail } from "../services";
 
 export default function CTA() {
   const [email, setEmail] = useState("");
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setFeedback("");
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailPattern.test(email)) {
-      setFeedback("Thank you — your request has been received.");
-      setFeedbackType("success");
-      setEmail("");
-    } else {
+    if (!emailPattern.test(email)) {
       setFeedback("Please enter a valid business email address.");
       setFeedbackType("error");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await subscribeEmail(email);
+
+      if (result.success) {
+        setFeedback(result.message);
+        setFeedbackType("success");
+        setEmail("");
+      } else {
+        setFeedback(result.message);
+        setFeedbackType("error");
+      }
+    } catch (error) {
+      console.error("CTA submission failed:", error);
+      setFeedback("An unexpected error occurred. Please try again.");
+      setFeedbackType("error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,9 +59,14 @@ export default function CTA() {
             className={styles.emailInput}
             placeholder="Enter your business email"
             required
+            disabled={isLoading}
           />
-          <button type="submit" className={styles.submitBtn}>
-            Request Access
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={isLoading}
+          >
+            {isLoading ? "Processing..." : "Request Access"}{" "}
           </button>
         </form>
 

@@ -585,3 +585,34 @@ export async function getPortfolioEarnings(tickers) {
     };
   }
 }
+
+// Email subscription
+export async function subscribeEmail(email) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/subscribe`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok || response.status === 200 || response.status === 201) {
+      return { success: true, message: data.message };
+    } else {
+      return {
+        success: false,
+        message: data.message || "Failed to subscribe email.",
+      };
+    }
+  } catch (error) {
+    console.error("Error during email subscription service call:", error);
+    return {
+      success: false,
+      message:
+        error.message || "Network error occurred during email subscription.",
+    };
+  }
+}
