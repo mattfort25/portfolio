@@ -491,9 +491,9 @@ const Header = () => {
               >
                 Insights
               </Link>
-              {/* <Link href="/auth/login" className={styles.navLink}>
+              <Link href="/auth/login" className={styles.navLink}>
                 Login
-              </Link> */}
+              </Link>
               <Link href="/demo" className={styles.ctaButton}>
                 Request Access
               </Link>
